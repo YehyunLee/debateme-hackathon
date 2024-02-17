@@ -7,55 +7,41 @@ import { LayoutRouter } from 'next/dist/server/app-render/entry-base';
 import { useState } from 'react';
 import { start } from 'repl';
 import {motion} from 'framer-motion';
+import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
 
 export default function VoiceToText() {
-  const [transcript, setTranscript] = useState('');
+  //const [transcript, setTranscript] = useState('');
   const [style, setStyle] = useState("idle");
- 
+  const {
+    transcript,
+    listening,
+    resetTranscript,
+    browserSupportsSpeechRecognition
+  } = useSpeechRecognition();
+  
   // eslint-disable-next-line @typescript-eslint/no-redundant-type-constituents, @typescript-eslint/no-explicit-any
-  let recognition: any = null;
+  //var recognition: any = null;
 
   const [toggle, setToggle] = useState<boolean>(false);
 
   const toggleListening = () => {
     setToggle(!toggle);
-    console.log("you just clicked");
+
     if (style !== "idle") setStyle("idle");
     else setStyle("fill-red-500");
-    if (toggle) {
-      stopListening();
-
-
-    } else {
-      startListening();
-     
-
+    if (!toggle) {
+      SpeechRecognition.startListening({continuous: true});
+      resetTranscript;
     }
-  }
+    else {
+      SpeechRecognition.stopListening();
+    }
+  };
   
-  const startListening = () => {
-
-    setTranscript(''); // Reset the transcript when starting a new recording
-    recognition = new (window as any).webkitSpeechRecognition();
-    recognition.lang = 'en-US';
-    recognition.interimResults = false;
-    recognition.maxAlternatives = 1;
-    recognition.continuous = true; // Enable continuous recognition
-
-    recognition.onresult = (event: any) => {
-      // Append the new transcript to the existing one
-      const newTranscript = event.results[event.results.length - 1][0].transcript;
-      setTranscript((oldTranscript) => `${oldTranscript} ${newTranscript}`);
-    };
-
-    recognition.start();
-  };
-
-  const stopListening = () => {
-    recognition?.stop();
-  };
+  
 
   return (
+    <>
     <div className='w-100vw clear-both mb-[128px] pt-20 flex-col items-center justify-center text-center'>
       <button onClick={toggleListening} className="border-2 rounded-full p-[0.25rem] border-black">
       <svg className={style} fill="#000000" height="25px" width="25px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" 
@@ -71,6 +57,7 @@ export default function VoiceToText() {
       </button>
       <p>{transcript}</p>
     </div>
+    </>
   );
 }
 

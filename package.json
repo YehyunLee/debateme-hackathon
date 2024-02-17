@@ -28,6 +28,7 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-moving-text": "^0.0.7",
+    "react-speech-recognition": "^3.10.0",
     "superjson": "^2.2.1",
     "zod": "^3.22.4"
   },
