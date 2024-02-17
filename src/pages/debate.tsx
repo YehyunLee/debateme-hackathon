@@ -4,23 +4,37 @@ import Head from "next/head";
 // import Link from "next/link";
 import Image from "next/image";
 import VoiceToText from "~/components/VoiceToText";
-
-import { api } from "~/utils/api";
-
-
+import { useEffect, useState } from "react";
 
 export default function debate() {
+  
+  let bubbleContainer : HTMLElement | null;
+  useEffect(() => {
+    bubbleContainer = document.getElementById('bubbleContainer');
+  })
 
+
+  const showTranscript = (dataFromChild: string) => {
+    const newHtml = `<p class="bubble right"> ${dataFromChild} </p>`
+  
+    if (bubbleContainer) {
+      bubbleContainer.insertAdjacentHTML("beforeend", newHtml);
+    }
+  };
+
+  const showAnswer = (dataFromChild: string) => {
+    const newHtml = `<p class="bubble left"> ${dataFromChild} </p>`
+  
+    if (bubbleContainer) {
+      bubbleContainer.insertAdjacentHTML("beforeend", newHtml);
+    }
+  };
+
+
+  
   return (
     <>
-      < div className="w-[100vw] flex-col ">
-      <div className="bubble left">Bro ipsum dolor sit amet gaper backside single track, manny Bike epic clipless. Schraeder drop gondy, rail fatty slash gear jammer steeps</div>
-        <div className="bubble right">Ok, Thank you</div>
-        <div className="bubble left"> ut labore et dolore magna </div>
-        <div className="bubble right">Ok, Thank you</div>
-        <div className="bubble right">Ok, Thank you</div>
-        <div className="bubble right">Ok, Thank you</div>
-
+      < div id="bubbleContainer" className="w-[100vw] flex-col ">
         <div className="bubble right">Ok, Thank you</div>
 
         <div className="bubble right">Ok, Thank you</div>
@@ -31,8 +45,9 @@ export default function debate() {
         <div className="bubble right">Ok, Thank you</div>
 
         <div className="bubble right">Ok, Thank you</div>
-        <VoiceToText />
         </div>
+        <VoiceToText sendTranscriptToParent={showTranscript} />
+
     </>
   );
 }

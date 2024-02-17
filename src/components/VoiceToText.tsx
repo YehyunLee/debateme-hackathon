@@ -10,7 +10,7 @@ import { start } from 'repl';
 import {motion} from 'framer-motion';
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
 
-export default function VoiceToText() {
+export default function VoiceToText(props: any) {
   //const [transcript, setTranscript] = useState('');
   const [style, setStyle] = useState("idle");
   const {
@@ -22,28 +22,32 @@ export default function VoiceToText() {
   
   // eslint-disable-next-line @typescript-eslint/no-redundant-type-constituents, @typescript-eslint/no-explicit-any
   //var recognition: any = null;
-
-  const [toggle, setToggle] = useState<boolean>(false);
-
+  
+  const [toggle, setToggle] = useState<boolean>(true);
   const toggleListening = () => {
-    setToggle(!toggle);
-
+    
     if (style !== "idle") setStyle("idle");
     else setStyle("fill-red-500");
-    if (!toggle) {
-      SpeechRecognition.startListening({continuous: true}).catch((error) => console.error(error));
-      resetTranscript;
+    if (toggle) {
+      SpeechRecognition.startListening({continuous: true});
+      resetTranscript();
     }
     else {
-      SpeechRecognition.stopListening().catch((error) => console.error(error));
+      SpeechRecognition.stopListening();
+      console.log(transcript);
+      props.sendTranscriptToParent(transcript);
+
+      
     }
+    setToggle(!toggle);
   };
   
+
   
 
   return (
     <>
-    <div className='w-100vw clear-both mb-[128px] pt-20 flex-col items-center justify-center text-center'>
+    <div className='w-100vw clear-both mb-0 absolute flex-col items-center justify-center text-center sticky backdrop-filter backdrop-blur'>
       <button onClick={toggleListening} className="border-2 rounded-full p-[0.25rem] border-black">
       <svg className={style} fill="#000000" height="25px" width="25px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" 
 	 viewBox="0 0 470 470">
