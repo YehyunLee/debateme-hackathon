@@ -6,10 +6,6 @@ import Image from "next/image";
 import { api } from "~/utils/api";
 import DebateLeaderboard from "~/components/debateLeaderboard";
 
-
-
-
-
 const users: [string, number][] = [
   ['user1', 10],
   ['user2', 15],
@@ -20,7 +16,6 @@ const users: [string, number][] = [
 
 
 export default function Home() {
-  const hello = api.post.hello.useQuery({ text: "from tRPC" });
 
   return (
     <>
@@ -39,6 +34,12 @@ export default function Home() {
             Feedback
           </p>
         </div>
+
+
+        <div className="flex flex-col items-center gap-2 text-black">
+          <AuthShowcase />
+        </div>
+
         </div>
 
         <div className="bg-DAF2F1 h-381 flex w-full flex-col items-center gap-2">
@@ -90,14 +91,6 @@ export default function Home() {
         </div>
         </div>
 
-        <div className="flex flex-col items-center gap-2 text-black">
-          <p className="text-2xl">
-            {hello.data ? hello.data.greeting : "Loading tRPC query..."}
-          
-          </p>
-          <AuthShowcase />
-        </div>
-
         </div>
         </div>
     </>
@@ -106,7 +99,7 @@ export default function Home() {
 
 function AuthShowcase() {
   const { data: sessionData } = useSession();
-  const callbackUrl = '/';
+  const callbackUrl = '/play';
 
   const { data: secretMessage } = api.post.getSecretMessage.useQuery(
     undefined, // no input
@@ -114,24 +107,18 @@ function AuthShowcase() {
   );
 
   return (
-<div className="flex flex-col items-center justify-center gap-4">
+<div className="flex flex-col items-center justify-center gap-2 pb-4">
   <p className="text-center text-2xl text-black">
     {sessionData && <span>Logged in as {sessionData.user?.name}</span>}
-    {secretMessage && <span> - {secretMessage}</span>}
   </p>
   <button
     className="rounded-full bg-1E635F text-white px-10 py-3 font-semibold no-underline transition hover:bg-white hover:text-1E635F hover:bg-opacity-20"
-    // I want redirect to home page after sign in
-    // onClick={sessionData ? () => void signOut() : () => void signIn()}
     onClick={sessionData ? () => signOut() : () => signIn('credentials', { callbackUrl })}
 
   >
     {sessionData ? "Sign out" : "Sign in"}
   </button>
 
-  {/* <p>
-  {sessionData?.name}
-  </p> */}
 </div>
 
   );
