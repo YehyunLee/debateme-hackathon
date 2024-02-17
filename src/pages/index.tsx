@@ -106,7 +106,7 @@ export default function Home() {
 
 function AuthShowcase() {
   const { data: sessionData } = useSession();
-  const callbackUrl = '/' // The URL you want to redirect to
+  const callbackUrl = 'http://debateme.alphastone.ai/';
 
   const { data: secretMessage } = api.post.getSecretMessage.useQuery(
     undefined, // no input
