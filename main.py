@@ -28,7 +28,6 @@ def generate_debate_prompts(gamemode, interested_subjects):
 
     else:
         return json.dumps({"error": "Invalid gamemode. Choose either 'normal' or 'crazy'"}, indent=4)
-    print(prompts)
     return prompts
 
 
