@@ -7,7 +7,7 @@ import Image from "next/image";
 import VoiceToText from "~/components/VoiceToText";
 import { useEffect } from "react";
 
-export default function debate() {
+export default function Debate() {
   
   let bubbleContainer : HTMLElement | null;
   useEffect(() => {
@@ -36,16 +36,7 @@ export default function debate() {
   return (
     <>
       < div id="bubbleContainer" className="w-[100vw] flex-col ">
-        <div className="bubble right">Ok, Thank you</div>
-
-        <div className="bubble right">Ok, Thank you</div>
-
-
-        <div className="bubble right">Ok, Thank you</div>
-
-        <div className="bubble right">Ok, Thank you</div>
-
-        <div className="bubble right">Ok, Thank you</div>
+        {/* <div className="bubble right">Ok, Thank you</div> */}
         </div>
         <VoiceToText sendTranscriptToParent={showTranscript} />
 

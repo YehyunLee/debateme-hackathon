@@ -6,7 +6,7 @@ import Image from "next/image";
 import { useEffect } from "react";
 import { useRouter } from "next/router";
 import { useState } from "react"; // Import useState hook
-import DebateChat from "~/components/debateChat";
+import Debate from "~/components/debate";
 
 import { api } from "~/utils/api";
 import DebateLeaderboard from "~/components/debateLeaderboard";
@@ -56,7 +56,7 @@ export default function Home() {
             <h2 className="mb-4 text-2xl font-bold">Profile</h2>
             <div className="mb-4 rounded-lg bg-white p-4">
               <p className="mb-2 text-black">
-                <span className="font-bold">Current DPA:</span> 2.1
+                <span className="font-bold">Current DPA:</span> {sessionData?.user?.name}
               </p>
               <p className="mb-2 text-black">
                 <span className="font-bold">Interested Topics:</span> AI,
@@ -92,7 +92,7 @@ export default function Home() {
       </div>
       )}
 
-      {debateChatEnabled && <DebateChat />}
+      {debateChatEnabled && <Debate />}
 
     </>
   );
