@@ -57,7 +57,7 @@ export default function Home() {
         </div>
         <div className="bg-F5FAFA snap-start">
         <div className="textBlock text-1E635F bg-F5FAFA flex pt-8 pb-8 w-[60vw] flex-col mr-[auto] ml-[auto] [&>*]:mb-[0.5rem]">
-          <h2 className="text-3xl font-bold"> What is Debate Me?</h2>
+           <h2 data-aos="fade-right" className="text-3xl font-bold"> What is Debate Me?</h2>
            <p> Join the conversation and sharpen your debate skills with Debate Me.
              Whether you&apos;re a seasoned debater or just getting started, Debate.Me 
              offers an immersive platform to engage in meaningful discussions and 
