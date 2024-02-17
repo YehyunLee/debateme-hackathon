@@ -11,8 +11,8 @@ export default {
       colors: {
         '1E635F': '#1E635F',
         'F5FAFA': '#F5FAFA',
-        'DAF2F1' : '#DAF2F1',
-      },
+        'DAF2F1' : '#DAF2F1'
+        },
     },
   },
   plugins: [],
