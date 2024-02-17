@@ -13,23 +13,23 @@ export default function debate() {
   return (
     <>
       < div className="w-[100vw] flex-col ">
-      <div class="bubble left">Bro ipsum dolor sit amet gaper backside single track, manny Bike epic clipless. Schraeder drop gondy, rail fatty slash gear jammer steeps</div>
-        <div class="bubble right">Ok, Thank you</div>
-        <div class="bubble left"> ut labore et dolore magna </div>
-        <div class="bubble right">Ok, Thank you</div>
-        <div class="bubble right">Ok, Thank you</div>
-        <div class="bubble right">Ok, Thank you</div>
+      <div className="bubble left">Bro ipsum dolor sit amet gaper backside single track, manny Bike epic clipless. Schraeder drop gondy, rail fatty slash gear jammer steeps</div>
+        <div className="bubble right">Ok, Thank you</div>
+        <div className="bubble left"> ut labore et dolore magna </div>
+        <div className="bubble right">Ok, Thank you</div>
+        <div className="bubble right">Ok, Thank you</div>
+        <div className="bubble right">Ok, Thank you</div>
 
-        <div class="bubble right">Ok, Thank you</div>
+        <div className="bubble right">Ok, Thank you</div>
 
-        <div class="bubble right">Ok, Thank you</div>
+        <div className="bubble right">Ok, Thank you</div>
 
 
-        <div class="bubble right">Ok, Thank you</div>
+        <div className="bubble right">Ok, Thank you</div>
 
-        <div class="bubble right">Ok, Thank you</div>
+        <div className="bubble right">Ok, Thank you</div>
 
-        <div class="bubble right">Ok, Thank you</div>
+        <div className="bubble right">Ok, Thank you</div>
         <VoiceToText />
         </div>
     </>
