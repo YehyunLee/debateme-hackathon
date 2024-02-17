@@ -37,10 +37,10 @@ const Nav: React.FC = () => {
               >
                 Play
               </button>
-              <button onClick={handleSignOut}>Sign out</button>
+              <button onClick={handleSignOut} className="text-black">Sign out</button>
             </>
           ) : (
-            <button onClick={handleSignIn}>Sign in</button>
+            <button onClick={handleSignIn} className="text-black">Sign in</button>
           )}
           {/* use DiscordProfile */}
           <div className="ml-4 pr-4">
