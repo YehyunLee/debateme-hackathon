@@ -2,7 +2,7 @@ type UserTuple = [string, number];
 
 const debateLeaderboard = (users: UserTuple[]): JSX.Element => {
     // Mapping each tuple to a table row
-    const rows: JSX.Element[] = users.map((user: UserTuple, index: number) => (
+    const rows: React.JSX[] = users.map((user: UserTuple, index: number) => (
         <tr key={index}>
             <td>{user[0]}</td> {/* Username */}
             <td>{user[1]}</td> {/* Integer value */}
