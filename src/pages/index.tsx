@@ -2,13 +2,11 @@ import { signIn, signOut, useSession } from "next-auth/react";
 import Head from "next/head";
 import Link from "next/link";
 import Image from "next/image";
-import { useRouter } from "next/router"; // Import useRouter hook
 
 import { api } from "~/utils/api";
 
 export default function Home() {
   const hello = api.post.hello.useQuery({ text: "from tRPC" });
-  const router = useRouter(); // Initialize useRouter hook
 
   return (
     <>
@@ -51,35 +49,25 @@ export default function Home() {
 
 function AuthShowcase() {
   const { data: sessionData } = useSession();
-  const router = useRouter(); // Initialize useRouter hook
 
   const { data: secretMessage } = api.post.getSecretMessage.useQuery(
-    undefined,
+    undefined, // no input
     { enabled: sessionData?.user !== undefined },
   );
 
-  // Function to handle sign-in with redirect URL
-  const handleSignIn = async () => {
-    await signIn('credentials', { callbackUrl: router.asPath });
-  };
-
-  // Function to handle sign-out with redirect URL
-  const handleSignOut = async () => {
-    await signOut({ callbackUrl: '/' }); // Redirect to homepage after sign-out
-  };
-
   return (
-    <div className="flex flex-col items-center justify-center gap-4">
-      <p className="text-center text-2xl text-black">
-        {sessionData && <span>Logged in as {sessionData.user?.name}</span>}
-        {secretMessage && <span> - {secretMessage}</span>}
-      </p>
-      <button
-        className="rounded-full bg-1E635F text-white px-10 py-3 font-semibold no-underline transition hover:bg-white hover:text-1E635F hover:bg-opacity-20"
-        onClick={sessionData ? handleSignOut : handleSignIn} // Use handleSignIn and handleSignOut functions
-      >
-        {sessionData ? "Sign out" : "Sign in"}
-      </button>
-    </div>
+<div className="flex flex-col items-center justify-center gap-4">
+  <p className="text-center text-2xl text-black">
+    {sessionData && <span>Logged in as {sessionData.user?.name}</span>}
+    {secretMessage && <span> - {secretMessage}</span>}
+  </p>
+  <button
+    className="rounded-full bg-1E635F text-white px-10 py-3 font-semibold no-underline transition hover:bg-white hover:text-1E635F hover:bg-opacity-20"
+    onClick={sessionData ? () => void signOut() : () => void signIn()}
+  >
+    {sessionData ? "Sign out" : "Sign in"}
+  </button>
+</div>
+
   );
 }
