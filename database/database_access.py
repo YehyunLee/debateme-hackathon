@@ -11,6 +11,7 @@ database_password = config_file["database"]["password"]
 database_host = config_file["database"]["host"]
 database_port = config_file["database"]["port"]
 
+# data
 
 class database_conn:
     def __init__(self):
@@ -29,6 +30,7 @@ class database_conn:
             self._create_user_info_db()
             self._create_user_winrate_db()
             self._create_user_interests_db()
+            self._create_user_elo_db()
             print("Databases created successfully")
         except ProgrammingError as e:
             print("Database already created")
@@ -42,11 +44,15 @@ class database_conn:
 
     def _create_user_info_db(self):
         # private function for making the user_info database
-        self.cur.execute("CREATE TABLE users_info (user_id SERIAL PRIMARY KEY, level INTEGER NOT NULL, exp INTEGER NOT NULL, max_exp INTEGER NOT NULL);")
+        self.cur.execute("CREATE TABLE users_info (user_id SERIAL PRIMARY KEY, level INTEGER NOT NULL, exp INTEGER NOT NULL);")
 
     def _create_user_winrate_db(self):
         # private function for making the user_winrate database
         self.cur.execute("CREATE TABLE users_winrate (user_id SERIAL PRIMARY KEY, wins INTEGER NOT NULL, losses INTEGER NOT NULL, dpa FLOAT NOT NULL);")
+
+    def _create_user_elo_db(self):
+        # private function for making the user_elo database
+        self.cur.execute("CREATE TABLE users_elo (user_id SERIAL PRIMARY INTEGER, elo INTEGER NOT NULL);")
 
     def _create_user_interests_db(self):
         # private function for making the user_interests database
@@ -82,6 +88,23 @@ class database_conn:
             self.cur.execute("UPDATE users_login SET username = %s WHERE user_id = %s;", (username, user_id))
         self.conn.commit()
 
+    def add_user_elo(self, user_id: int, elo: int):
+        """
+        Add user elo information, any duplicataes user_ids will be updated instead
+
+        Parameters:
+            user_id (int): The ID of the user.
+            elo (int): The elo of the user.
+        """
+        self.cur.execute("SELECT COUNT(*) FROM user_elo WHERE user_id = %s")
+        count = self.cur.fetchone()[0]
+        if count == 0:
+            self.cur.execute("INSERT INTO user_elo (user_id, elo) VALUES (%s, %s);", (user_id, elo))
+        else:
+            self.cur.execute("UPDATE user_elo SET elo = %s WHERE user_id = %s;", (elo, user_id))
+        self.conn.commit()
+
+
     def add_user_info(self, user_id: int, level: int, exp: int, max_exp: int):
         """
         Add user information, any duplicate user_ids will be updated.
@@ -97,10 +120,10 @@ class database_conn:
         count = self.cur.fetchone()[0]
         if count == 0:
             # The user does not exist, insert a new record
-            self.cur.execute("INSERT INTO users_info (user_id, level, exp, max_exp) VALUES (%s, %s, %s, %s);", (user_id, level, exp, max_exp))
+            self.cur.execute("INSERT INTO users_info (user_id, level, exp) VALUES (%s, %s, %s);", (user_id, level, exp))
         else:
             # The user exists, update the existing record
-            self.cur.execute("UPDATE users_info SET level = %s, exp = %s, max_exp = %s WHERE user_id = %s;", (level, exp, max_exp, user_id))
+            self.cur.execute("UPDATE users_info SET level = %s, exp = %s WHERE user_id = %s;", (level, exp, user_id))
         self.conn.commit()
 
     def add_user_winrate(self, user_id: int, wins: int, losses: int, dpa: float):
@@ -162,7 +185,13 @@ class database_conn:
         Returns:
             tuple: A tuple containing the level, experience points, and maximum experience points of the user.
         """
-        self.cur.execute("SELECT level, exp, max_exp FROM users_info WHERE user_id = %s;", (user_id,))
+        self.cur.execute("SELECT level, exp FROM users_info WHERE user_id = %s;", (user_id,))
+        response = self.cur.fetchone()
+        return response
+    
+    def get_user_elo(self, user_id: int) -> tuple:
+        # do something here
+        self.cur.execute("SELECT elo FROM users_elo WHERE user_id = %s;", (user_id,))
         response = self.cur.fetchone()
         return response
 
