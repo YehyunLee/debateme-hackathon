@@ -31,11 +31,11 @@ export default function VoiceToText() {
     if (style !== "idle") setStyle("idle");
     else setStyle("fill-red-500");
     if (!toggle) {
-      SpeechRecognition.startListening({continuous: true});
+      void SpeechRecognition.startListening({continuous: true});
       resetTranscript;
     }
     else {
-      SpeechRecognition.stopListening();
+      void SpeechRecognition.stopListening();
     }
   };
   
