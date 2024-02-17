@@ -64,7 +64,6 @@ export default function Home() {
         </div>
         </div>
 
-
         <div className="bg-F5FAFA snap-center">
         <DebateLeaderboard data={users}/>
         </div>
