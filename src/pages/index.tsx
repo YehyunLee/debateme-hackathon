@@ -24,7 +24,6 @@ export default function Home() {
         <title>Debateme</title>
         <meta name="description" content="Debateme website" />
         <link rel="icon" href="/favicon.ico" />
-        <link ref="stylesheet" href="indexStyle.css"/>
       </Head>
 
       <div className="bg-F5FAFA">
