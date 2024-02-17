@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useEffect } from "react";
 import { useRouter } from "next/router";
 import { useState } from "react"; // Import useState hook
+import DebateChat from "~/components/debateChat";
 
 import { api } from "~/utils/api";
 import DebateLeaderboard from "~/components/debateLeaderboard";
@@ -12,6 +13,7 @@ export default function Home() {
   const { data: sessionData, status } = useSession();
   const router = useRouter();
 
+  const [debateChatEnabled, setDebateChatEnabled] = useState<boolean>(false);
   const users: [string, number][] = [
     ["user1", 10],
     ["user2", 15],
@@ -23,7 +25,8 @@ export default function Home() {
   const [playMode, setPlayMode] = useState<'normal' | 'crazy'>('normal'); // Initialize state for play mode
 
   const handlePlayMode = (mode: 'normal' | 'crazy') => {
-    setPlayMode(mode); // Set the selected play mode
+    setPlayMode(mode);
+    setDebateChatEnabled(true);
   };
 
   useEffect(() => {
@@ -44,6 +47,7 @@ export default function Home() {
         <meta name="description" content="Debateme website" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
+      {!debateChatEnabled && (
       <div className="flex flex-col md:flex-row">
         <div className="w-full p-4 md:w-1/2">
           <div className="rounded-3xl bg-DAF2F1 p-4 shadow-2xl">
@@ -84,6 +88,10 @@ export default function Home() {
           </div>
         </div>
       </div>
+      )}
+
+      {debateChatEnabled && <DebateChat />}
+
     </>
   );
 }
