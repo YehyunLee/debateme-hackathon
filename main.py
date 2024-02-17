@@ -1,8 +1,13 @@
 from flask import Flask, request, jsonify
 import openai
 import json
+from database import database_access
+from database_access import database_conn
+
+database_instance = database_conn()
 
 app = Flask(__name__)
+
 
 openai.api_key = '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'
 
