@@ -37,6 +37,6 @@
     "**/*.cjs",
     "**/*.js",
     ".next/types/**/*.ts"
-  ],
+, "src/components/IconMicrophone.jsx", "src/pages/blobToBase64.jsx", "src/pages/blobToBase64.jsx", "src/pages/api/speechToText/openAIAPI.tsx"  ],
   "exclude": ["node_modules"]
 }
