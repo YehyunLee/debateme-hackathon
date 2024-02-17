@@ -24,7 +24,7 @@ export default function Home() {
         <meta name="description" content="Debateme website" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <div className="overflow-y-scroll">
+      <div>
       <div className="snap-y snap-mandatory">
       <div className="bg-F5FAFA snap-start">
         <div className="flex flex-col items-center gap-2 pb-4">
