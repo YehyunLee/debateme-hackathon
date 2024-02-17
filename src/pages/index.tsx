@@ -4,7 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 
 import { api } from "~/utils/api";
-import DebateLeaderboard from "./debateLeaderboard";
+// import DebateLeaderboard from "./debateLeaderboard";
 
 
 type UserTuple = [string, number];
