@@ -90,7 +90,7 @@ class database_conn:
         self.conn.commit()
 
 
-    def add_user_info(self, user_id: int, level: int, exp: int, max_exp: int):
+    def add_user_info(self, user_id: int, level: int, exp: int):
         """
         Add user information, any duplicate user_ids will be updated.
 
@@ -98,7 +98,6 @@ class database_conn:
             user_id (int): The ID of the user.
             level (int): The level of the user.
             exp (int): The experience points of the user.
-            max_exp (int): The maximum experience points of the user.
         """
         # Check if the user exists
         self.cur.execute("SELECT COUNT(*) FROM users_info WHERE user_id = %s;", (user_id,))
@@ -219,3 +218,4 @@ class database_conn:
         self.cur.execute("DROP TABLE IF EXISTS users_winrate;")
         self.cur.execute("DROP TABLE IF EXISTS users_interests;")
         self.cur.execute("DROP TABLE IF EXISTS users_elo;")
+
