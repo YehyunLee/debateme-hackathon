@@ -1,10 +1,11 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { signIn, signOut, useSession } from "next-auth/react";
 import Head from "next/head";
 // import Link from "next/link";
 import Image from "next/image";
 import VoiceToText from "~/components/VoiceToText";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 export default function debate() {
   
