@@ -11,7 +11,7 @@ database_password = config_file["database"]["password"]
 database_host = config_file["database"]["host"]
 database_port = config_file["database"]["port"]
 
-# delete max exp
+# data
 
 class database_conn:
     def __init__(self):
@@ -82,6 +82,10 @@ class database_conn:
             # The user exists, update the existing record
             self.cur.execute("UPDATE users_login SET username = %s WHERE user_id = %s;", (username, user_id))
         self.conn.commit()
+
+    def add_user_elo(self, user_id: int, elo: int):
+        # do something here
+        a = 0
 
     def add_user_info(self, user_id: int, level: int, exp: int, max_exp: int):
         """
@@ -166,6 +170,9 @@ class database_conn:
         self.cur.execute("SELECT level, exp FROM users_info WHERE user_id = %s;", (user_id,))
         response = self.cur.fetchone()
         return response
+    
+    def get_user_elo(self, user_id: int) -> tuple:
+        # do something here
 
     def get_user_winrate(self, user_id: int) -> tuple:
         """
