@@ -30,6 +30,7 @@ class database_conn:
             self._create_user_info_db()
             self._create_user_winrate_db()
             self._create_user_interests_db()
+            self._create_user_elo_db()
             print("Databases created successfully")
         except ProgrammingError as e:
             print("Database already created")
@@ -48,6 +49,10 @@ class database_conn:
     def _create_user_winrate_db(self):
         # private function for making the user_winrate database
         self.cur.execute("CREATE TABLE users_winrate (user_id SERIAL PRIMARY KEY, wins INTEGER NOT NULL, losses INTEGER NOT NULL, dpa FLOAT NOT NULL);")
+
+    def _create_user_elo_db(self):
+        # private function for making the user_elo database
+        self.cur.execute("CREATE TABLE users_elo (user_id SERIAL PRIMARY INTEGER, elo INTEGER NOT NULL);")
 
     def _create_user_interests_db(self):
         # private function for making the user_interests database
@@ -84,8 +89,21 @@ class database_conn:
         self.conn.commit()
 
     def add_user_elo(self, user_id: int, elo: int):
-        # do something here
-        a = 0
+        """
+        Add user elo information, any duplicataes user_ids will be updated instead
+
+        Parameters:
+            user_id (int): The ID of the user.
+            elo (int): The elo of the user.
+        """
+        self.cur.execute("SELECT COUNT(*) FROM user_elo WHERE user_id = %s")
+        count = self.cur.fetchone()[0]
+        if count == 0:
+            self.cur.execute("INSERT INTO user_elo (user_id, elo) VALUES (%s, %s);", (user_id, elo))
+        else:
+            self.cur.execute("UPDATE user_elo SET elo = %s WHERE user_id = %s;", (elo, user_id))
+        self.conn.commit()
+
 
     def add_user_info(self, user_id: int, level: int, exp: int, max_exp: int):
         """
@@ -173,6 +191,9 @@ class database_conn:
     
     def get_user_elo(self, user_id: int) -> tuple:
         # do something here
+        self.cur.execute("SELECT elo FROM users_elo WHERE user_id = %s;", (user_id,))
+        response = self.cur.fetchone()
+        return response
 
     def get_user_winrate(self, user_id: int) -> tuple:
         """
