@@ -1,5 +1,6 @@
+
 export default function TextToSpeech() {
-  const speak = (text: string) => { // Add type annotation to 'text' parameter
+  const speak = (text) => {
     const utterance = new SpeechSynthesisUtterance(text);
     utterance.lang = 'en-US'; // Set the language to English
     window.speechSynthesis.speak(utterance);
