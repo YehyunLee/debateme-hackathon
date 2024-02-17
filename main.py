@@ -36,14 +36,27 @@ def generate_debate_prompts(gamemode, interested_subjects):
 
     return json.dumps(prompts, indent=4)
 
+def increaseElo(user_id, actual_outcome, gamemode="normal"):
+    cur_user_elo = database_instance.get_user_elo(user_id)[0]
+    expected_outcome = cur_user_elo // 100 + 1 if cur_user_elo <= 1000 else 10
+    if gamemode == "normal":
+        added_elo = cur_user_elo + actual_outcome - expected_outcome
+    else:
+        added_elo = cur_user_elo + 2(actual_outcome - expected_outcome)
+    database_instance.add_user_elo(user_id, added_elo)
 
-def judge_debate_content(debate_topic, user_beginning_debate, gpt_response, users_reply, current_level, current_exp, gamemode="normal"):
+def judge_debate_content(user_id, debate_topic, user_beginning_debate, gpt_response, users_reply, gamemode="normal"):
     if gamemode == "normal":
         exp = 1000
     else:
         exp = 2000
-    exp_to_next_level = next_level(current_level)
-    new_exp = current_exp + exp
+    cur_user_data = database_instance.get_user_info(user_id)
+    cur_exp = cur_user_data[2] + exp
+    cur_level = cur_user_data[1]
+    while cur_exp >= next_level(cur_level):
+        cur_exp -= next_level(cur_level)
+        cur_level += 1
+    database_instance.add_user_info(user_id, cur_level, cur_exp)
 
     prompt = {
         "prompt": f"Debate Topic: {debate_topic}\nUser's Beginning Debate:\n{user_beginning_debate}\nGPT Response:\n{gpt_response}\nUser's Reply to GPT Response:\n{users_reply}\n\n"
@@ -54,7 +67,7 @@ def judge_debate_content(debate_topic, user_beginning_debate, gpt_response, user
                   f"Argument Clarity: [Rating]\nDepth of Analysis: [Rating]\nCounterargument Consideration: [Rating]\n"
                   f"Engagement with Opposing Views: [Rating]\nLanguage and Tone: [Rating]\nCoherence and Flow: [Rating]\n"
                   f"Originality and Creativity: [Rating]\nAggregate Score: [Aggregate Score]\n\n"
-                  f"After evaluating, please structure your feedback in a JSON format.The gamemode is {gamemode}, if its crazy, please mark harsher for user debate mistakes and give higher points for users positive debate attributes\n",
+                  f"After evaluating, please structure your feedback in a JSON format.The gamemode is {gamemode}\n",
         "temperature": 0.7,
         "max_tokens": 1000,
     }
@@ -108,7 +121,7 @@ def judge_debate():
     user_beginning_debate = data.get('user_beginning_debate')
     gpt_response = data.get('gpt_response')
     users_reply = data.get('users_reply')
-    gamemode = data.get('gamemode', 'normal')
+    gamemode = data.get('gamemode')
     return jsonify(judge_debate_content(debate_topic, user_beginning_debate, gpt_response, users_reply, gamemode))
 
 
@@ -119,6 +132,15 @@ def generate_response():
     user_transcript = data.get('user_transcript')
     elo = data.get('elo')
     return generate_opposing_response(debate_topic, user_transcript, elo)
+
+@app.route('/add_user_elo', methods=['POST'])
+def add_elo():
+    data = request.json
+    user_id = data.get('user_id')
+    actual_outcome = data.get('actual_outcome')
+    gamemode = data.get('gamemode')
+    increaseElo(user_id, actual_outcome, gamemode)
+    return "elo added"
 
 
 if __name__ == '__main__':
