@@ -32,7 +32,14 @@ def generate_debate_prompts(gamemode, interested_subjects):
     return json.dumps(prompts, indent=4)
 
 
-def judge_debate_content(debate_topic, user_beginning_debate, gpt_response, users_reply, gamemode="normal"):
+def judge_debate_content(debate_topic, user_beginning_debate, gpt_response, users_reply, current_level, current_exp, gamemode="normal"):
+    if gamemode == "normal":
+        exp = 1000
+    else:
+        exp = 2000
+    exp_to_next_level = next_level(current_level)
+    new_exp = current_exp + exp
+
     prompt = {
         "prompt": f"Debate Topic: {debate_topic}\nUser's Beginning Debate:\n{user_beginning_debate}\nGPT Response:\n{gpt_response}\nUser's Reply to GPT Response:\n{users_reply}\n\n"
                   f"Please provide feedback and scores for the following categories:\n- Argument Clarity:\n- Depth of Analysis:\n- "
@@ -78,6 +85,8 @@ def generate_opposing_response(debate_topic, user_transcript, elo):
 
     return json.dumps({"opposing_response": response.choices[0].text.strip()}, indent=4)
 
+def next_level(level: int) -> int:
+    return round((4 * (level ** 3)) / 5)
 
 @app.route('/generate_prompts', methods=['POST'])
 def generate_prompts():
