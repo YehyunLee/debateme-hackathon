@@ -7,13 +7,13 @@ import { api } from "~/utils/api";
 // import DebateLeaderboard from "./debateLeaderboard";
 
 
-type UserTuple = [string, number];
+// type UserTuple = [string, number];
 
-const users: UserTuple[] = [
-  ['user1', 10],
-  ['user2', 15],
-  ['user3', 20]
-];
+// const users: UserTuple[] = [
+//   ['user1', 10],
+//   ['user2', 15],
+//   ['user3', 20]
+// ];
 
 export default function Home() {
   const hello = api.post.hello.useQuery({ text: "from tRPC" });
