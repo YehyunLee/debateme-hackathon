@@ -24,44 +24,29 @@ class database_conn:
             port=database_port
         )
         self.cur = self.conn.cursor()
-        try:
-            # this creates the tables if it doesn't already exist
-            self._create_user_login_db()
-            self._create_user_info_db()
-            self._create_user_winrate_db()
-            self._create_user_interests_db()
-            self._create_user_elo_db()
-            print("Databases created successfully")
-        except ProgrammingError as e:
-            print("Database already created")
 
         # prevents errors of corrupting the conn from previous runs
         self.conn.rollback()
 
-    def _create_user_login_db(self):
-        # private function for making the user_login database
-        self.cur.execute("CREATE TABLE users_login (user_id SERIAL PRIMARY KEY, username VARCHAR(255) NOT NULL);")
+        self.conn.autocommit = True
 
-    def _create_user_info_db(self):
-        # private function for making the user_info database
-        self.cur.execute("CREATE TABLE users_info (user_id SERIAL PRIMARY KEY, level INTEGER NOT NULL, exp INTEGER NOT NULL);")
+        self._create_tables()
 
-    def _create_user_winrate_db(self):
-        # private function for making the user_winrate database
-        self.cur.execute("CREATE TABLE users_winrate (user_id SERIAL PRIMARY KEY, wins INTEGER NOT NULL, losses INTEGER NOT NULL, dpa FLOAT NOT NULL);")
-
-    def _create_user_elo_db(self):
-        # private function for making the user_elo database
-        self.cur.execute("CREATE TABLE users_elo (user_id SERIAL PRIMARY INTEGER, elo INTEGER NOT NULL);")
-
-    def _create_user_interests_db(self):
-        # private function for making the user_interests database
-        self.cur.execute("CREATE TABLE users_interests (user_id INTEGER, interest VARCHAR(255) NOT NULL);")
+    def _create_tables(self):
+        try:
+            self.cur.execute("CREATE TABLE IF NOT EXISTS users_login (user_id SERIAL PRIMARY KEY, username VARCHAR(255) NOT NULL);")
+            self.cur.execute("CREATE TABLE IF NOT EXISTS users_info (user_id SERIAL PRIMARY KEY, level INTEGER NOT NULL, exp INTEGER NOT NULL);")
+            self.cur.execute("CREATE TABLE IF NOT EXISTS users_winrate (user_id SERIAL PRIMARY KEY, wins INTEGER NOT NULL, losses INTEGER NOT NULL, dpa FLOAT NOT NULL);")
+            self.cur.execute("CREATE TABLE IF NOT EXISTS users_interests (user_id INTEGER, interest VARCHAR(255) NOT NULL);")
+            self.cur.execute("CREATE TABLE IF NOT EXISTS users_elo (user_id SERIAL PRIMARY KEY, elo INTEGER NOT NULL);")
+            print("Databases created successfully")
+        except ProgrammingError as e:
+            print("Error creating tables:", e)
 
     def get_all_user(self) -> list:
         """
         Gets all the user_ids in the database
-        
+
         format of the output: [(125,)]
         """
         self.cur.execute("SELECT user_id FROM users_login")
@@ -96,12 +81,12 @@ class database_conn:
             user_id (int): The ID of the user.
             elo (int): The elo of the user.
         """
-        self.cur.execute("SELECT COUNT(*) FROM user_elo WHERE user_id = %s")
+        self.cur.execute("SELECT COUNT(*) FROM users_elo WHERE user_id = %s;", (user_id,))
         count = self.cur.fetchone()[0]
         if count == 0:
-            self.cur.execute("INSERT INTO user_elo (user_id, elo) VALUES (%s, %s);", (user_id, elo))
+            self.cur.execute("INSERT INTO users_elo (user_id, elo) VALUES (%s, %s);", (user_id, elo))
         else:
-            self.cur.execute("UPDATE user_elo SET elo = %s WHERE user_id = %s;", (elo, user_id))
+            self.cur.execute("UPDATE users_elo SET elo = %s WHERE user_id = %s;", (elo, user_id))
         self.conn.commit()
 
 
@@ -188,7 +173,7 @@ class database_conn:
         self.cur.execute("SELECT level, exp FROM users_info WHERE user_id = %s;", (user_id,))
         response = self.cur.fetchone()
         return response
-    
+
     def get_user_elo(self, user_id: int) -> tuple:
         # do something here
         self.cur.execute("SELECT elo FROM users_elo WHERE user_id = %s;", (user_id,))
@@ -230,15 +215,7 @@ class database_conn:
     def _delete_all_tables(self) -> None:
         # don't use this function, only used for testing
         self.cur.execute("DROP TABLE IF EXISTS users_login;")
+        self.cur.execute("DROP TABLE IF EXISTS users_info;")
+        self.cur.execute("DROP TABLE IF EXISTS users_winrate;")
         self.cur.execute("DROP TABLE IF EXISTS users_interests;")
-
-
-# make sure that whoever uses the database instances close it upopn finishing, otherwise it's not good for the database
-obj = database_conn()
-obj._delete_all_tables()
-obj._create_user_login_db()
-obj.add_user_login(125,"frank123")
-print(obj.get_all_user())
-print(obj.get_user_login(125))
-obj.conn.close()
-
+        self.cur.execute("DROP TABLE IF EXISTS users_elo;")
