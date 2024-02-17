@@ -25,15 +25,14 @@ export default function VoiceToText(props: any) {
   
   const [toggle, setToggle] = useState<boolean>(true);
   const toggleListening = () => {
-    
     if (style !== "idle") setStyle("idle");
     else setStyle("fill-red-500");
     if (toggle) {
-      SpeechRecognition.startListening({continuous: true});
+      SpeechRecognition.startListening({continuous: true}).catch((error) => console.error(error));
       resetTranscript();
     }
     else {
-      SpeechRecognition.stopListening();
+      SpeechRecognition.stopListening().catch((error) => console.error(error));
       console.log(transcript);
       props.sendTranscriptToParent(transcript);
 
@@ -41,9 +40,6 @@ export default function VoiceToText(props: any) {
     }
     setToggle(!toggle);
   };
-  
-
-  
 
   return (
     <>
