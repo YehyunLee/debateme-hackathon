@@ -58,6 +58,7 @@ export default function Home() {
         <div className="bg-F5FAFA snap-start">
         <div className="textBlock text-1E635F bg-F5FAFA flex pt-8 pb-8 w-[60vw] flex-col mr-[auto] ml-[auto] [&>*]:mb-[0.5rem]">
            <h2 data-aos="fade-right" className="text-3xl font-bold"> What is Debate Me?</h2>
+           <div data-aos="fade-down-right">
            <p> Join the conversation and sharpen your debate skills with Debate Me.
              Whether you&apos;re a seasoned debater or just getting started, Debate.Me 
              offers an immersive platform to engage in meaningful discussions and 
@@ -72,7 +73,8 @@ export default function Home() {
             
             <p className="!mb-[1.5rem]"> <b>Debate Grade Average (DPA):  </b> Receive real-time feedback on your debate performance. 
             Our advanced analysis evaluates your content, tone, and delivery, providing insights to help you improve your skills.</p>
-            
+            </div>
+            <div data-aos="fade-up-right">
             <p > <b>How It Works: </b> </p>
 
             <p> <b>Sign Up: </b> Create your Debate.Me account and select your interests and preferred debate mode. </p>
@@ -88,6 +90,7 @@ export default function Home() {
 
             <p> <b> Compete and Improve: </b>Climb the leaderboard and strive for excellence as you refine your debate skills 
             and engage in compelling discussions. </p>
+            </div>
         </div>
         </div>
 
