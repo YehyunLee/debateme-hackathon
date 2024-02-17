@@ -85,9 +85,9 @@ function AuthShowcase() {
     {sessionData ? "Sign out" : "Sign in"}
   </button>
 
-  <p>
+  {/* <p>
   {sessionData?.name}
-  </p>
+  </p> */}
 </div>
 
   );
