@@ -110,6 +110,38 @@ export default function Home() {
     router.reload();
   };
 
+  const resetInterests = async () => {
+    try {
+      if (sessionData?.user?.name) {
+        // Split interests by comma and trim each value
+        const interestsArray = interests
+          .split(",")
+          .map((interest) => interest.trim());
+
+        // Make a POST request to the Flask route
+        const response = await axios.post(
+          "https://web-production-a23d.up.railway.app/remove_interests",
+          {
+            user_id: sessionData.user.id,
+            interests: interestsArray,
+          },
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          },
+        );
+
+        // Handle the response as needed
+        console.log(response.data); // Should log "user created" if successful
+      }
+    } catch (error) {
+      console.error("Error resetting interests:", error);
+    }
+    // refresh
+    router.reload();
+  };
+
   useEffect(() => {
     if (status === "loading") return; // Still loading, don't do anything yet
 
@@ -175,7 +207,7 @@ export default function Home() {
             )}
             {!userData.isLoading && (
               <div className="rounded-3xl bg-DAF2F1 p-4 shadow-2xl" data-aos="fade-up">
-                <h2 className="mb-4 text-2xl font-bold">Reset Account</h2>
+                <h2 className="mb-4 text-2xl font-bold">Reset Interests</h2>
                 <div className="mb-4 rounded-lg bg-white p-4">
                   <label htmlFor="interests" className="block text-gray-700">
                     Type interests (e.g., &quot;AI, Politics, Sports&quot;):
@@ -190,10 +222,10 @@ export default function Home() {
                   />
                 </div>
                 <button
-                  onClick={createUser} // Call createUser when the button is clicked
-                  className="rounded-lg bg-red-500 px-4 py-2 text-white hover:bg-blue-600"
+                  onClick={resetInterests} // Call createUser when the button is clicked
+                  className="rounded-lg bg-red-500 px-4 py-2 text-white hover:bg-red-600"
                 >
-                  Reset Account
+                  Reset Interests
                 </button>
               </div>
             )}
