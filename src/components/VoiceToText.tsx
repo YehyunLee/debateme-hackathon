@@ -49,11 +49,6 @@ export default function VoiceToText(props: any) {
         );
         
         // Update the component state with the received data
-
-        props.sendTranscriptToBot(response.data.opposing_response);
-        botTranscript += response.data.opposing_response;
-        button.disabled = false;
-        resetTranscript();
         if (1 < userTranscript.length) {
           console.log({
             user_id: props.sessionData.user.id, 
@@ -64,7 +59,15 @@ export default function VoiceToText(props: any) {
             gamemode: props.gamemode
           });
           getDebatePrompt()
+          
         }
+        else {
+        props.sendTranscriptToBot(response.data.opposing_response);
+        botTranscript.push(response.data.opposing_response);
+        button.disabled = false;
+        }
+        resetTranscript();
+        
       }
     } catch (error) {
       console.error("Error fetching user data:", error);
@@ -88,7 +91,6 @@ export default function VoiceToText(props: any) {
       props.sendTranscriptToParent(transcript);
 
       userTranscript.push(transcript);
-      console.log(userTranscript.length)
       retrieveResponse()
       button.disabled = true;
       
@@ -119,7 +121,7 @@ export default function VoiceToText(props: any) {
             },
           );
            
-          response.data.score
+          props.sendTranscriptToBot(response.data.feedback_text);
 
           // Update the component state with the received data
   
