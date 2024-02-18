@@ -53,6 +53,18 @@ export default function VoiceToText(props: any) {
         props.sendTranscriptToBot(response.data.opposing_response);
         botTranscript += response.data.opposing_response;
         button.disabled = false;
+        resetTranscript();
+        if (1 < userTranscript.length) {
+          console.log({
+            user_id: props.sessionData.user.id, 
+            debate_topic: props.debatePrompt, 
+            user_beginning_debate: userTranscript[0],
+            gpt_response: botTranscript,
+            users_reply: userTranscript[1],
+            gamemode: props.gamemode
+          });
+          getDebatePrompt()
+        }
       }
     } catch (error) {
       console.error("Error fetching user data:", error);
@@ -69,13 +81,14 @@ export default function VoiceToText(props: any) {
     else setStyle("fill-red-500");
     if (toggle) {
       SpeechRecognition.startListening({continuous: true});
-      resetTranscript();
+      
     }
     else {
       SpeechRecognition.stopListening();
       props.sendTranscriptToParent(transcript);
 
-      userTranscript += transcript;
+      userTranscript.push(transcript);
+      console.log(userTranscript.length)
       retrieveResponse()
       button.disabled = true;
       
@@ -83,6 +96,38 @@ export default function VoiceToText(props: any) {
     setToggle(!toggle);
   };
   
+  
+    const getDebatePrompt = async () => {
+      
+      try {
+        if (props.sessionData?.user?.id) {
+          // Make a POST request to the Flask backend with the user's name as input
+          const response = await axios.post(
+            "https://web-production-a23d.up.railway.app/judge_debate",
+            {
+              user_id: props.sessionData.user.id, 
+              debate_topic: props.debatePrompt, 
+              user_beginning_debate: userTranscript[0],
+              gpt_response: botTranscript,
+              users_reply: userTranscript[1],
+              gamemode: props.gamemode
+            },
+            {
+              headers: {
+                "Content-Type": "application/json",
+              },
+            },
+          );
+           
+          response.data.score
+
+          // Update the component state with the received data
+  
+        }
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
+    };
 
   if (loading) {
 
