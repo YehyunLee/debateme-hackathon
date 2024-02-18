@@ -130,7 +130,7 @@ export default function Home() {
         <div className="flex flex-col md:flex-row">
           <div className="w-full p-4 md:w-1/2">
             {!userData.isLoading && (
-              <div className="mb-4 rounded-3xl bg-DAF2F1 p-4 shadow-2xl">
+              <div className="mb-4 rounded-3xl bg-DAF2F1 p-4 shadow-2xl" data-aos="fade-up">
                 <h2 className="mb-4 text-2xl font-bold">Profile</h2>
                 {userData.isLoading ? (
                   <p>Loading...</p>
@@ -150,7 +150,7 @@ export default function Home() {
             )}
 
             {userData.isLoading && (
-              <div className="rounded-3xl bg-DAF2F1 p-4 shadow-2xl">
+              <div className="rounded-3xl bg-DAF2F1 p-4 shadow-2xl" data-aos="fade-up">
                 <h2 className="mb-4 text-2xl font-bold">Create Account</h2>
                 <div className="mb-4 rounded-lg bg-white p-4">
                   <label htmlFor="interests" className="block text-gray-700">
@@ -174,7 +174,7 @@ export default function Home() {
               </div>
             )}
             {!userData.isLoading && (
-              <div className="rounded-3xl bg-DAF2F1 p-4 shadow-2xl">
+              <div className="rounded-3xl bg-DAF2F1 p-4 shadow-2xl" data-aos="fade-up">
                 <h2 className="mb-4 text-2xl font-bold">Reset Account</h2>
                 <div className="mb-4 rounded-lg bg-white p-4">
                   <label htmlFor="interests" className="block text-gray-700">
@@ -199,7 +199,7 @@ export default function Home() {
             )}
 
             {!userData.isLoading && (
-              <div className="mt-4 rounded-3xl bg-DAF2F1 p-4 shadow-2xl">
+              <div className="mt-4 rounded-3xl bg-DAF2F1 p-4 shadow-2xl" data-aos="fade-up">
                 <h2 className="mb-4 text-2xl font-bold">Play</h2>
                 <div className="mb-4 rounded-lg bg-white p-4">
                   <p className="mb-2 text-1E635F">
@@ -226,7 +226,7 @@ export default function Home() {
             )}
           </div>
           <div className="w-full p-4 md:w-1/2">
-            <div className="rounded-3xl bg-DAF2F1 p-4 shadow-2xl">
+            <div className="rounded-3xl bg-DAF2F1 p-4 shadow-2xl" data-aos="fade-up">
               <h2 className="mb-4 text-2xl font-bold">Leaderboard</h2>
               <DebateLeaderboard />
             </div>

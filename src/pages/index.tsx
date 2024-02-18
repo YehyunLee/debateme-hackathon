@@ -27,7 +27,7 @@ export default function Home() {
       <div>
       <div className="snap-y snap-mandatory">
       <div className="bg-F5FAFA snap-start">
-        <div className="flex flex-col items-center gap-2 pb-4" data-aos="zoom-in-up">
+        <div className="flex flex-col items-center gap-2 pb-4" data-aos="fade-up">
           <p className="text-1E635F mt-6 text-5xl font-extrabold">Welcome to Debate Me!</p>
           <p className="text-507371 text-2xl mb-4">
             Refine Your Debating Prowess And Communication Skills with AI
