@@ -5,6 +5,8 @@ import { signIn, signOut, useSession } from "next-auth/react";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import type { DiscordProfile } from "next-auth/providers/discord";
+import DebateIcon from "./DebateMeIcon.jpg";
+
 
 
 const Nav: React.FC = () => {

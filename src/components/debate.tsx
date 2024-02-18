@@ -7,6 +7,9 @@ import Image from "next/image";
 import VoiceToText from "~/components/VoiceToText";
 import { useEffect } from "react";
 
+
+var userTranscript: string
+
 export default function Debate() {
   
   let bubbleContainer : HTMLElement | null;
@@ -16,6 +19,8 @@ export default function Debate() {
 
 
   const showTranscript = (dataFromChild: string) => {
+    userTranscript += dataFromChild;
+    console.log(userTranscript);
     const newHtml = `<p class="bubble right"> ${dataFromChild} </p>`
   
     if (bubbleContainer) {
@@ -24,6 +29,7 @@ export default function Debate() {
   };
 
   const showAnswer = (dataFromChild: string) => {
+    
     const newHtml = `<p class="bubble left"> ${dataFromChild} </p>`
   
     if (bubbleContainer) {
