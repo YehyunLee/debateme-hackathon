@@ -15,14 +15,14 @@ import axios from 'axios';
 import speak from "~/components/speak";
 
 
-var userTranscript: string
-var botTranscript: string
+var userTranscript: string[]
+var botTranscript: string[]
 export default function VoiceToText(props: any) {
   //const [transcript, setTranscript] = useState('');
   const [style, setStyle] = useState("idle");
 
   const [loading, setLoading] = useState(true);
-
+  const [score, setScore] = useState('');
   let button: HTMLButtonElement;
 
   const {
@@ -56,6 +56,9 @@ export default function VoiceToText(props: any) {
         botTranscript += response.data.opposing_response;
         speak(response.data.opposing_response);
         button.disabled = false;
+        if (1 < userTranscript.length) {
+          getDebatePrompt()
+        }
       }
     } catch (error) {
       console.error("Error fetching user data:", error);
@@ -78,15 +81,54 @@ export default function VoiceToText(props: any) {
       SpeechRecognition.stopListening();
       props.sendTranscriptToParent(transcript);
 
-      userTranscript += transcript;
+      userTranscript.push(transcript);
       retrieveResponse()
       button.disabled = true;
-      
+
+       
     }
     setToggle(!toggle);
   };
   
-  useEffect(() => {})
+  
+    const getDebatePrompt = async () => {
+      console.log({
+        user_id: props.sessionData.user.id, 
+        debate_topic: props.debatePrompt, 
+        user_beginning_debate: userTranscript[0],
+        gpt_response: botTranscript,
+        users_reply: userTranscript[1],
+        gamemode: props.gamemode
+      });
+      try {
+        if (props.sessionData?.user?.id) {
+          // Make a POST request to the Flask backend with the user's name as input
+          const response = await axios.post(
+            "https://web-production-a23d.up.railway.app/judge_debate",
+            {
+              user_id: props.sessionData.user.id, 
+              debate_topic: props.debatePrompt, 
+              user_beginning_debate: userTranscript[0],
+              gpt_response: botTranscript,
+              users_reply: userTranscript[1],
+              gamemode: props.gamemode
+            },
+            {
+              headers: {
+                "Content-Type": "application/json",
+              },
+            },
+          );
+           
+          response.data.score
+
+          // Update the component state with the received data
+  
+        }
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
+    };
 
   if (loading) {
 
@@ -109,6 +151,7 @@ export default function VoiceToText(props: any) {
         </svg>
       </button>
       <p>{transcript}</p>
+      <p> {score} </p>
     </div>
     </>
   );
