@@ -13,7 +13,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
 import axios from 'axios';
-// import speak from "~/components/speak";
+import speak from "~/components/speak";
 
 
 var userTranscript: string[]
@@ -55,7 +55,7 @@ export default function VoiceToText(props: any) {
 
         props.sendTranscriptToBot(response.data.opposing_response);
         botTranscript += response.data.opposing_response;
-        // speak(response.data.opposing_response);
+        speak(response.data.opposing_response);
         button.disabled = false;
         if (1 < userTranscript.length) {
           getDebatePrompt()
@@ -105,7 +105,7 @@ export default function VoiceToText(props: any) {
         if (props.sessionData?.user?.id) {
           // Make a POST request to the Flask backend with the user's name as input
           const response = await axios.post(
-            "https://web-production-589c.up.railway.app/judge_debate",
+            "https://web-production-a23d.up.railway.app/judge_debate",
             {
               user_id: props.sessionData.user.id, 
               debate_topic: props.debatePrompt, 
