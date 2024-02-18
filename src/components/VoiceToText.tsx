@@ -63,6 +63,7 @@ export default function VoiceToText(props: any) {
         }
         else {
         props.sendTranscriptToBot(response.data.opposing_response);
+        speak(response.data.opposing_response);
         botTranscript.push(response.data.opposing_response);
         button.disabled = false;
         }
@@ -89,7 +90,6 @@ export default function VoiceToText(props: any) {
     else {
       SpeechRecognition.stopListening();
       props.sendTranscriptToParent(transcript);
-
       userTranscript.push(transcript);
       retrieveResponse()
       button.disabled = true;
@@ -122,7 +122,7 @@ export default function VoiceToText(props: any) {
           );
            
           props.sendTranscriptToBot(response.data.feedback_text);
-
+          speak(response.data.feedback_text);
           // Update the component state with the received data
   
         }
@@ -139,7 +139,7 @@ export default function VoiceToText(props: any) {
     <>
     
     <div className='w-100vw clear-both mb-32 absolute flex-col items-center justify-center text-center sticky backdrop-filter backdrop-blur'>
-      <button id="mic" onClick={toggleListening} className="border-2 rounded-full p-[0.25rem] border-black">
+      <button id="mic" onClick={toggleListening} className="border-2 rounded-full p-[0.25rem] border-black mt-[1.5rem]">
       <svg className={style} fill="#000000" height="25px" width="25px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" 
 	 viewBox="0 0 470 470">
         <g>
