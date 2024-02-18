@@ -28,7 +28,11 @@ export default function Home() {
     ["user4", 20],
     ["user5", 20],
   ];
-  const [userData, setUserData] = useState(null); // Moved userData state to the Home component
+  const [userData, setUserData] = useState({
+    dpa: null,
+    interests: null,
+    isLoading: true,
+  });
 
   const [playMode, setPlayMode] = useState<"normal" | "crazy">("normal"); // Initialize state for play mode
 
@@ -38,15 +42,13 @@ export default function Home() {
   };
 
   useEffect(() => {
-    // Define a function to fetch user data
     const fetchUserData = async () => {
       try {
         if (sessionData?.user?.name) {
-          // Make a POST request to the Flask backend with the user's name as input
           const response = await axios.post(
             "https://web-production-a23d.up.railway.app/get_user",
             {
-              user_id: "123",
+              user_id: sessionData.user.name,
             },
             {
               headers: {
@@ -55,29 +57,65 @@ export default function Home() {
             },
           );
 
-          console.log("Fetching user data...");
-
-          // Update the component state with the received data
-          setUserData(response.data);
+          setUserData({
+            dpa: response.data.dpa,
+            interests: response.data.interests,
+            isLoading: false,
+          });
         }
       } catch (error) {
         console.error("Error fetching user data:", error);
       }
     };
 
-    // Call the fetchUserData function when the component mounts
     fetchUserData();
-  }, [sessionData]); // Include sessionData in the dependency array
+  }, [sessionData]);
+
+
+
+
+  const [interests, setInterests] = useState(""); // Initialize state for interests
+
+  const createUser = async () => {
+    try {
+      if (sessionData?.user?.name) {
+        // Split interests by comma and trim each value
+        const interestsArray = interests.split(",").map(interest => interest.trim());
+
+        console.log(interestsArray, sessionData.user.id, sessionData.user.name)
+    
+        // Make a POST request to the Flask route
+        const response = await axios.post(
+          "https://web-production-a23d.up.railway.app/create_user",
+          {
+            user_id: sessionData.user.id,
+            username: sessionData.user.name,
+            interests: interestsArray,
+          },
+          {
+            headers: {
+              "Content-Type": "application/json"
+            }
+          }
+        );
+    
+        // Handle the response as needed
+        console.log(response.data); // Should log "user created" if successful
+      }
+    } catch (error) {
+      console.error("Error creating user:", error);
+    }
+  };
+
+
+
 
   useEffect(() => {
     if (status === "loading") return; // Still loading, don't do anything yet
 
     if (!sessionData?.user) {
-      console.log("No user");
       router.push("/api/auth/signin?callbackUrl=%2Fplay");
     } else {
-      console.log("User found");
-      console.log(userData?.dpa);
     }
   }, [sessionData, status, router]);
 
@@ -93,34 +131,45 @@ export default function Home() {
           <div className="w-full p-4 md:w-1/2">
             <div className="rounded-3xl bg-DAF2F1 p-4 shadow-2xl">
               <h2 className="mb-4 text-2xl font-bold">Profile</h2>
-              <div className="mb-4 rounded-lg bg-white p-4">
-                <p className="mb-2 text-black">
-                  <span className="font-bold">Current DPA:</span>{" "}
-                  {userData?.dpa}
-                </p>
-                <p className="mb-2 text-black">
-                  <span className="font-bold">Interested Topics:</span>{" "}
-                  {userData?.interests}
-                </p>
-              </div>
+              {userData.isLoading ? (
+                <p>Loading...</p>
+              ) : (
+                <div className="mb-4 rounded-lg bg-white p-4">
+                  <p className="mb-2 text-black">
+                    <span className="font-bold">Current DPA:</span>{" "}
+                    {userData.dpa}
+                  </p>
+                  <p className="mb-2 text-black">
+                    <span className="font-bold">Interested Topics:</span>{" "}
+                    {userData.interests}
+                  </p>
+                </div>
+              )}
             </div>
 
             <div className="mt-4 rounded-3xl bg-DAF2F1 p-4 shadow-2xl">
-              <h2 className="mb-4 text-2xl font-bold">
-                Create Account (Reset Elo)
-              </h2>
-              <div className="mb-4 rounded-lg bg-white p-4">
-                <label htmlFor="interests" className="block text-gray-700">
-                  Type interests (e.g., "AI, Politics, Sports"):
-                </label>
-                <input
-                  type="text"
-                  id="interests"
-                  name="interests"
-                  className="mt-1 block w-full rounded-lg border-gray-300 p-2 focus:border-indigo-500 focus:outline-none"
-                />
-              </div>
-            </div>
+        <h2 className="mb-4 text-2xl font-bold">Create Account</h2>
+        <div className="mb-4 rounded-lg bg-white p-4">
+          <label htmlFor="interests" className="block text-gray-700">
+            Type interests (e.g., "AI, Politics, Sports"):
+          </label>
+          <input
+            type="text"
+            id="interests"
+            name="interests"
+            value={interests} // Bind the input value to the state
+            onChange={(e) => setInterests(e.target.value)} // Update the state when the input changes
+            className="mt-1 block w-full rounded-lg border-gray-300 p-2 focus:border-indigo-500 focus:outline-none"
+          />
+        </div>
+        <button
+          onClick={createUser} // Call createUser when the button is clicked
+          className="rounded-lg bg-red-500 text-white px-4 py-2 hover:bg-blue-600"
+        >
+          Create Account / Reset Elo
+        </button>
+      </div>
+
 
             <div className="mt-4 rounded-3xl bg-DAF2F1 p-4 shadow-2xl">
               <h2 className="mb-4 text-2xl font-bold">Play</h2>
