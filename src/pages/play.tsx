@@ -62,6 +62,7 @@ export default function Home() {
             interests: response.data.interests,
             isLoading: false,
           });
+          setInterests(response.data.interests);
         }
       } catch (error) {
         console.error("Error fetching user data:", error);
@@ -77,6 +78,7 @@ export default function Home() {
     try {
       if (sessionData?.user?.name) {
         // Split interests by comma and trim each value
+        console.log(interests);
         const interestsArray = interests
           .split(",")
           .map((interest) => interest.trim());
@@ -230,7 +232,7 @@ export default function Home() {
         </div>
       )}
 
-      {debateChatEnabled && <Debate sessionData={sessionData}/>}
+      {debateChatEnabled && <Debate sessionData={sessionData} playmode={playMode} interests={interests}/>}
     </>
   );
 }

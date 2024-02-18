@@ -8,13 +8,16 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 // import Link from "next/link";
 import VoiceToText from "~/components/VoiceToText";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import axios from "axios";
 let userTranscript: string
 export default function Debate(props: any) {
   let bubbleContainer : HTMLElement | null;
   let sessionData = props.sessionData;
   const [debatePrompt, setDebatePrompt] = useState('');
+  const [debateArgument, setDebateArgument] = useState('');
+
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     bubbleContainer = document.getElementById('bubbleContainer');
@@ -26,12 +29,13 @@ export default function Debate(props: any) {
       try {
         if (sessionData?.user?.id) {
           // Make a POST request to the Flask backend with the user's name as input
-          console.log("Hello World");
+          console.log(props.playmode);
+          console.log(sessionData.user.);
           const response = await axios.post(
             "https://web-production-a23d.up.railway.app/generate_debate_prompts",
             {
-              gamemode: "normal", 
-              interested_subjects: ["Artificial Intelligence", "Machine Learning", "Biden"]
+              gamemode: props.playmode, 
+              interested_subjects: props.interests
             },
             {
               headers: {
@@ -54,9 +58,8 @@ export default function Debate(props: any) {
   }, [sessionData]); // Include sessionData in the dependency array
 
 
+
   const showTranscript = (dataFromChild: string) => {
-    userTranscript += dataFromChild;
-    console.log(userTranscript);
     const newHtml = `<p class="bubble right"> ${dataFromChild} </p>`
   
     if (bubbleContainer) {
@@ -79,7 +82,7 @@ export default function Debate(props: any) {
       < div id="bubbleContainer" className="w-[100vw] flex-col ">
         {/* <div className="bubble right">Ok, Thank you</div> */}
         </div>
-        <VoiceToText sendTranscriptToParent={showTranscript} />
+        <VoiceToText sendTranscriptToParent={showTranscript} debatePrompt={debatePrompt} sendTranscriptToBot={showAnswer} />
 
     </>
   );
