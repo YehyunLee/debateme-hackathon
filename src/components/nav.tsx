@@ -28,7 +28,18 @@ const Nav: React.FC = () => {
   return (
     <header className="sticky top-0 z-10 pt-6 pb-5 backdrop-filter backdrop-blur dark:bg-primary dark:text-white">
       <nav className="flex items-center justify-between h-16 font-semibold text-sm after:absolute after:inset-x-0 after:w-full after:h-12 after:shadow-hr after:z-[-1]">
-        <button className="text-1E635F text-2xl font-bold ml-[1rem]"
+      <div className="absolute">
+            {session && (
+              <Image
+                src="/logo.png"
+                alt="Logo"
+                width={64}
+                height={64}
+              />
+            )}
+        </div>
+
+        <button className="text-1E635F text-2xl font-bold ml-[1rem] pl-12"
         onClick={() => router.push("/")}>Debate Me</button>
         <div className="flex items-center">
           {session ? (
