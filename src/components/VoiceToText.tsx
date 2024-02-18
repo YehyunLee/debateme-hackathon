@@ -1,3 +1,5 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable @typescript-eslint/no-empty-function */
 /* eslint-disable no-var */
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable @typescript-eslint/no-floating-promises */
@@ -10,6 +12,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
 import axios from 'axios';
+import speak from "~/components/speak";
 
 
 var userTranscript: string
@@ -51,6 +54,7 @@ export default function VoiceToText(props: any) {
 
         props.sendTranscriptToBot(response.data.opposing_response);
         botTranscript += response.data.opposing_response;
+        speak(response.data.opposing_response);
         button.disabled = false;
       }
     } catch (error) {
@@ -82,11 +86,7 @@ export default function VoiceToText(props: any) {
     setToggle(!toggle);
   };
   
-  useEffect(() => {
-    
-
-
-  })
+  useEffect(() => {})
 
   if (loading) {
 
