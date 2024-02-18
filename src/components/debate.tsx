@@ -29,8 +29,6 @@ export default function Debate(props: any) {
       try {
         if (sessionData?.user?.id) {
           // Make a POST request to the Flask backend with the user's name as input
-          console.log(props.playmode);
-          console.log(sessionData.user.);
           const response = await axios.post(
             "https://web-production-a23d.up.railway.app/generate_debate_prompts",
             {

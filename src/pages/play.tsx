@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/prefer-optional-chain */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
@@ -30,7 +31,7 @@ export default function Home() {
   ];
   const [userData, setUserData] = useState({
     dpa: null,
-    interests: null,
+    interests: [],
     isLoading: true,
   });
 
@@ -78,12 +79,11 @@ export default function Home() {
     try {
       if (sessionData?.user?.name) {
         // Split interests by comma and trim each value
-        console.log(interests);
         const interestsArray = interests
           .split(",")
           .map((interest) => interest.trim());
 
-        console.log(interestsArray, sessionData.user.id, sessionData.user.name);
+        console.log(sessionData.user.id, sessionData.user.name, interestsArray);
 
         // Make a POST request to the Flask route
         const response = await axios.post(
@@ -142,59 +142,61 @@ export default function Home() {
                     </p>
                     <p className="mb-2 text-black">
                       <span className="font-bold">Interested Topics:</span>{" "}
-                      {userData.interests}
+                      {Array.isArray(userData.interests) && userData.interests.join(", ")}
                     </p>
                   </div>
                 )}
               </div>
             )}
 
-        {userData.isLoading && (
-            <div className="rounded-3xl bg-DAF2F1 p-4 shadow-2xl">
-              <h2 className="mb-4 text-2xl font-bold">Create Account</h2>
-              <div className="mb-4 rounded-lg bg-white p-4">
-                <label htmlFor="interests" className="block text-gray-700">
-                  Type interests (e.g., &quot;AI, Politics, Sports&quot;):
-                </label>
-                <input
-                  type="text"
-                  id="interests"
-                  name="interests"
-                  value={interests} // Bind the input value to the state
-                  onChange={(e) => setInterests(e.target.value)} // Update the state when the input changes
-                  className="mt-1 block w-full rounded-lg border-gray-300 p-2 focus:border-indigo-500 focus:outline-none"
-                />
+            {userData.isLoading && (
+              <div className="rounded-3xl bg-DAF2F1 p-4 shadow-2xl">
+                <h2 className="mb-4 text-2xl font-bold">Create Account</h2>
+                <div className="mb-4 rounded-lg bg-white p-4">
+                  <label htmlFor="interests" className="block text-gray-700">
+                    Type interests (e.g., &quot;AI, Politics, Sports&quot;):
+                  </label>
+                  <input
+                    type="text"
+                    id="interests"
+                    name="interests"
+                    value={interests} // Bind the input value to the state
+                    onChange={(e) => setInterests(e.target.value)} // Update the state when the input changes
+                    className="mt-1 block w-full rounded-lg border-gray-300 p-2 focus:border-indigo-500 focus:outline-none"
+                  />
+                </div>
+                <button
+                  onClick={createUser} // Call createUser when the button is clicked
+                  className="rounded-lg bg-green-500 px-4 py-2 text-white hover:bg-blue-600"
+                >
+                  Create Account
+                </button>
               </div>
-              <button
-                onClick={createUser} // Call createUser when the button is clicked
-                className="rounded-lg bg-green-500 px-4 py-2 text-white hover:bg-blue-600"
-              >
-                Create Account
-              </button>
-            </div>)}
+            )}
             {!userData.isLoading && (
-            <div className="rounded-3xl bg-DAF2F1 p-4 shadow-2xl">
-              <h2 className="mb-4 text-2xl font-bold">Reset Account</h2>
-              <div className="mb-4 rounded-lg bg-white p-4">
-                <label htmlFor="interests" className="block text-gray-700">
-                  Type interests (e.g., &quot;AI, Politics, Sports&quot;):
-                </label>
-                <input
-                  type="text"
-                  id="interests"
-                  name="interests"
-                  value={interests} // Bind the input value to the state
-                  onChange={(e) => setInterests(e.target.value)} // Update the state when the input changes
-                  className="mt-1 block w-full rounded-lg border-gray-300 p-2 focus:border-indigo-500 focus:outline-none"
-                />
+              <div className="rounded-3xl bg-DAF2F1 p-4 shadow-2xl">
+                <h2 className="mb-4 text-2xl font-bold">Reset Account</h2>
+                <div className="mb-4 rounded-lg bg-white p-4">
+                  <label htmlFor="interests" className="block text-gray-700">
+                    Type interests (e.g., &quot;AI, Politics, Sports&quot;):
+                  </label>
+                  <input
+                    type="text"
+                    id="interests"
+                    name="interests"
+                    value={interests} // Bind the input value to the state
+                    onChange={(e) => setInterests(e.target.value)} // Update the state when the input changes
+                    className="mt-1 block w-full rounded-lg border-gray-300 p-2 focus:border-indigo-500 focus:outline-none"
+                  />
+                </div>
+                <button
+                  onClick={createUser} // Call createUser when the button is clicked
+                  className="rounded-lg bg-red-500 px-4 py-2 text-white hover:bg-blue-600"
+                >
+                  Reset Account
+                </button>
               </div>
-              <button
-                onClick={createUser} // Call createUser when the button is clicked
-                className="rounded-lg bg-red-500 px-4 py-2 text-white hover:bg-blue-600"
-              >
-                Reset Account
-              </button>
-            </div>)}
+            )}
 
             {!userData.isLoading && (
               <div className="mt-4 rounded-3xl bg-DAF2F1 p-4 shadow-2xl">
@@ -226,13 +228,19 @@ export default function Home() {
           <div className="w-full p-4 md:w-1/2">
             <div className="rounded-3xl bg-DAF2F1 p-4 shadow-2xl">
               <h2 className="mb-4 text-2xl font-bold">Leaderboard</h2>
-              <DebateLeaderboard/>
+              <DebateLeaderboard />
             </div>
           </div>
         </div>
       )}
 
-      {debateChatEnabled && <Debate sessionData={sessionData} playmode={playMode} interests={interests}/>}
+      {debateChatEnabled && (
+        <Debate
+          sessionData={sessionData}
+          playmode={playMode}
+          interests={interests}
+        />
+      )}
     </>
   );
 }
