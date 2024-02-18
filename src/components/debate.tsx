@@ -79,6 +79,7 @@ export default function Debate(props: any) {
       < div id="bubbleContainer" className="w-[100vw] flex-col ">
         {/* <div className="bubble right">Ok, Thank you</div> */}
         </div>
+        <hr className="m-[1rem] bg-black"></hr>
         <VoiceToText sendTranscriptToParent={showTranscript} sessionData={sessionData} debatePrompt={debatePrompt} sendTranscriptToBot={showAnswer} />
 
     </>
