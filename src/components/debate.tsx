@@ -5,17 +5,53 @@ import Head from "next/head";
 // import Link from "next/link";
 import Image from "next/image";
 import VoiceToText from "~/components/VoiceToText";
-import { useEffect } from "react";
-
-
+import { useEffect, useState } from "react";
+import { get_debate_prompts } from "~/pages/api/debate/debateAPI";
+import {axios} from "axios";
 var userTranscript: string
 
-export default function Debate() {
-  
+export default function Debate(props: any) {
+  let text: string;
   let bubbleContainer : HTMLElement | null;
+  let sessionData = props.sessionData;
+  const [debatePrompt, setDebatePrompt] = useState('');
+
   useEffect(() => {
     bubbleContainer = document.getElementById('bubbleContainer');
+
   })
+  useEffect(() => {
+    // Define a function to fetch user data
+    const getDebatePrompt = async () => {
+      try {
+        if (sessionData?.user?.id) {
+          // Make a POST request to the Flask backend with the user's name as input
+          const response = await axios.post(
+            "https://web-production-a23d.up.railway.app/generate_debate_prompts",
+            {
+              "gamemode": "normal", 
+              "interested_subjects": ["Artificial Intelligence", "Machine Learning", "Biden"]
+            },
+            {
+              headers: {
+                "Content-Type": "application/json",
+              },
+            },
+          );
+
+          console.log("Fetching user data...");
+
+          // Update the component state with the received data
+          setDebatePrompt(response.data);
+        }
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
+    };
+
+    // Call the fetchUserData function when the component mounts
+    getDebatePrompt();
+  }, [sessionData]); // Include sessionData in the dependency array
 
 
   const showTranscript = (dataFromChild: string) => {
@@ -39,6 +75,7 @@ export default function Debate() {
 
   return (
     <>
+    <p> {debatePrompt} </p>
       < div id="bubbleContainer" className="w-[100vw] flex-col ">
         {/* <div className="bubble right">Ok, Thank you</div> */}
         </div>
