@@ -1,10 +1,16 @@
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+/* eslint-disable @typescript-eslint/no-floating-promises */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable prefer-const */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 // import Link from "next/link";
 import VoiceToText from "~/components/VoiceToText";
 import { useEffect, useState } from "react";
 import axios from "axios";
-var userTranscript: string
+let userTranscript: string
 export default function Debate(props: any) {
   let bubbleContainer : HTMLElement | null;
   let sessionData = props.sessionData;

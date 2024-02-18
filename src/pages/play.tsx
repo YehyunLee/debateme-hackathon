@@ -152,7 +152,7 @@ export default function Home() {
               <h2 className="mb-4 text-2xl font-bold">Create Account</h2>
               <div className="mb-4 rounded-lg bg-white p-4">
                 <label htmlFor="interests" className="block text-gray-700">
-                  Type interests (e.g., "AI, Politics, Sports"):
+                  Type interests (e.g., &quot;AI, Politics, Sports&quot;):
                 </label>
                 <input
                   type="text"
