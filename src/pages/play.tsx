@@ -1,3 +1,7 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-floating-promises */
 import { signIn, signOut, useSession } from "next-auth/react";
@@ -7,6 +11,7 @@ import { useEffect } from "react";
 import { useRouter } from "next/router";
 import { useState } from "react"; // Import useState hook
 import Debate from "~/components/debate";
+import axios from "axios";
 
 import { api } from "~/utils/api";
 import DebateLeaderboard from "~/components/debateLeaderboard";
@@ -23,13 +28,46 @@ export default function Home() {
     ["user4", 20],
     ["user5", 20],
   ];
+  const [userData, setUserData] = useState(null); // Moved userData state to the Home component
 
-  const [playMode, setPlayMode] = useState<'normal' | 'crazy'>('normal'); // Initialize state for play mode
+  const [playMode, setPlayMode] = useState<"normal" | "crazy">("normal"); // Initialize state for play mode
 
-  const handlePlayMode = (mode: 'normal' | 'crazy') => {
+  const handlePlayMode = (mode: "normal" | "crazy") => {
     setPlayMode(mode);
     setDebateChatEnabled(true);
   };
+
+  useEffect(() => {
+    // Define a function to fetch user data
+    const fetchUserData = async () => {
+      try {
+        if (sessionData?.user?.name) {
+          // Make a POST request to the Flask backend with the user's name as input
+          const response = await axios.post(
+            "https://web-production-a23d.up.railway.app/get_user",
+            {
+              user_id: "123",
+            },
+            {
+              headers: {
+                "Content-Type": "application/json",
+              },
+            },
+          );
+
+          console.log("Fetching user data...");
+
+          // Update the component state with the received data
+          setUserData(response.data);
+        }
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
+    };
+
+    // Call the fetchUserData function when the component mounts
+    fetchUserData();
+  }, [sessionData]); // Include sessionData in the dependency array
 
   useEffect(() => {
     if (status === "loading") return; // Still loading, don't do anything yet
@@ -39,6 +77,7 @@ export default function Home() {
       router.push("/api/auth/signin?callbackUrl=%2Fplay");
     } else {
       console.log("User found");
+      console.log(userData?.dpa);
     }
   }, [sessionData, status, router]);
 
@@ -50,50 +89,74 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       {!debateChatEnabled && (
-      <div className="flex flex-col md:flex-row">
-        <div className="w-full p-4 md:w-1/2">
-          <div className="rounded-3xl bg-DAF2F1 p-4 shadow-2xl">
-            <h2 className="mb-4 text-2xl font-bold">Profile</h2>
-            <div className="mb-4 rounded-lg bg-white p-4">
-              <p className="mb-2 text-black">
-                <span className="font-bold">Current DPA:</span> {sessionData?.user?.name}
-              </p>
-              <p className="mb-2 text-black">
-                <span className="font-bold">Interested Topics:</span> AI,
-                Politics, Sports
-              </p>
+        <div className="flex flex-col md:flex-row">
+          <div className="w-full p-4 md:w-1/2">
+            <div className="rounded-3xl bg-DAF2F1 p-4 shadow-2xl">
+              <h2 className="mb-4 text-2xl font-bold">Profile</h2>
+              <div className="mb-4 rounded-lg bg-white p-4">
+                <p className="mb-2 text-black">
+                  <span className="font-bold">Current DPA:</span>{" "}
+                  {userData?.dpa}
+                </p>
+                <p className="mb-2 text-black">
+                  <span className="font-bold">Interested Topics:</span>{" "}
+                  {userData?.interests}
+                </p>
+              </div>
+            </div>
+
+            <div className="mt-4 rounded-3xl bg-DAF2F1 p-4 shadow-2xl">
+              <h2 className="mb-4 text-2xl font-bold">
+                Create Account (Reset Elo)
+              </h2>
+              <div className="mb-4 rounded-lg bg-white p-4">
+                <label htmlFor="interests" className="block text-gray-700">
+                  Type interests (e.g., "AI, Politics, Sports"):
+                </label>
+                <input
+                  type="text"
+                  id="interests"
+                  name="interests"
+                  className="mt-1 block w-full rounded-lg border-gray-300 p-2 focus:border-indigo-500 focus:outline-none"
+                />
+              </div>
+            </div>
+
+            <div className="mt-4 rounded-3xl bg-DAF2F1 p-4 shadow-2xl">
+              <h2 className="mb-4 text-2xl font-bold">Play</h2>
+              <div className="mb-4 rounded-lg bg-white p-4">
+                <p className="mb-2 text-1E635F">
+                  Normal - debate based on topics of your interests
+                </p>
+                <p className="text-red-600">
+                  Crazy - debate random topics and assigned arguments. Increased
+                  bonus and penalties.
+                </p>
+              </div>
+              <button
+                className={`mr-2 rounded-lg bg-1E635F px-4 py-2 text-white ${playMode === "normal" ? "opacity-100" : "opacity-50"}`}
+                onClick={() => handlePlayMode("normal")}
+              >
+                NORMAL
+              </button>
+              <button
+                className={`rounded-lg bg-red-600 px-4 py-2 text-white ${playMode === "crazy" ? "opacity-100" : "opacity-50"}`}
+                onClick={() => handlePlayMode("crazy")}
+              >
+                CRAZY
+              </button>
             </div>
           </div>
-          <div className="mt-4 rounded-3xl bg-DAF2F1 p-4 shadow-2xl">
-            <h2 className="mb-4 text-2xl font-bold">Play</h2>
-            <div className="mb-4 rounded-lg bg-white p-4">
-              <p className="mb-2 text-1E635F">
-                Normal - debate based on topics of your interests
-              </p>
-              <p className="text-red-600">
-                Crazy - debate random topics and assigned arguments. Increased
-                bonus and penalties.
-              </p>
+          <div className="w-full p-4 md:w-1/2">
+            <div className="rounded-3xl bg-DAF2F1 p-4 shadow-2xl">
+              <h2 className="mb-4 text-2xl font-bold">Leaderboard</h2>
+              <DebateLeaderboard data={users} />
             </div>
-            <button className={`mr-2 rounded-lg bg-1E635F px-4 py-2 text-white ${playMode === 'normal' ? 'opacity-100' : 'opacity-50'}`} onClick={() => handlePlayMode('normal')}>
-              NORMAL
-            </button>
-            <button className={`rounded-lg bg-red-600 px-4 py-2 text-white ${playMode === 'crazy' ? 'opacity-100' : 'opacity-50'}`} onClick={() => handlePlayMode('crazy')}>
-              CRAZY
-            </button>
           </div>
         </div>
-        <div className="w-full p-4 md:w-1/2">
-          <div className="rounded-3xl bg-DAF2F1 p-4 shadow-2xl">
-            <h2 className="mb-4 text-2xl font-bold">Leaderboard</h2>
-            <DebateLeaderboard data={users} />
-          </div>
-        </div>
-      </div>
       )}
 
       {debateChatEnabled && <Debate />}
-
     </>
   );
 }

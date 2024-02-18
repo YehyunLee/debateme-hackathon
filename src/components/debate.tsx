@@ -31,8 +31,6 @@ export default function Debate() {
     }
   };
 
-
-  
   return (
     <>
       < div id="bubbleContainer" className="w-[100vw] flex-col ">

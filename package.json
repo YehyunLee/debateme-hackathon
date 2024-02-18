@@ -22,9 +22,11 @@
     "@trpc/react-query": "^10.43.6",
     "@trpc/server": "^10.43.6",
     "aos": "^2.3.4",
+    "axios": "^1.6.7",
     "framer-motion": "^11.0.5",
     "next": "^14.0.4",
     "next-auth": "^4.24.5",
+    "node-fetch": "^3.3.2",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-moving-text": "^0.0.7",
@@ -49,7 +51,8 @@
     "prettier-plugin-tailwindcss": "^0.5.7",
     "prisma": "^5.6.0",
     "tailwindcss": "^3.3.5",
-    "typescript": "^5.1.6"
+    "typescript": "^5.1.6",
+    "webpack-node-externals": "^3.0.0"
   },
   "ct3aMetadata": {
     "initVersion": "7.26.0"
