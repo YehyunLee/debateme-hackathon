@@ -147,6 +147,7 @@ export default function Home() {
               </div>
             )}
 
+        {userData.isLoading && (
             <div className="rounded-3xl bg-DAF2F1 p-4 shadow-2xl">
               <h2 className="mb-4 text-2xl font-bold">Create Account</h2>
               <div className="mb-4 rounded-lg bg-white p-4">
@@ -164,11 +165,34 @@ export default function Home() {
               </div>
               <button
                 onClick={createUser} // Call createUser when the button is clicked
+                className="rounded-lg bg-green-500 px-4 py-2 text-white hover:bg-blue-600"
+              >
+                Create Account
+              </button>
+            </div>)}
+            {!userData.isLoading && (
+            <div className="rounded-3xl bg-DAF2F1 p-4 shadow-2xl">
+              <h2 className="mb-4 text-2xl font-bold">Reset Account</h2>
+              <div className="mb-4 rounded-lg bg-white p-4">
+                <label htmlFor="interests" className="block text-gray-700">
+                  Type interests (e.g., "AI, Politics, Sports"):
+                </label>
+                <input
+                  type="text"
+                  id="interests"
+                  name="interests"
+                  value={interests} // Bind the input value to the state
+                  onChange={(e) => setInterests(e.target.value)} // Update the state when the input changes
+                  className="mt-1 block w-full rounded-lg border-gray-300 p-2 focus:border-indigo-500 focus:outline-none"
+                />
+              </div>
+              <button
+                onClick={createUser} // Call createUser when the button is clicked
                 className="rounded-lg bg-red-500 px-4 py-2 text-white hover:bg-blue-600"
               >
-                Create/Reset Account
+                Reset Account
               </button>
-            </div>
+            </div>)}
 
             {!userData.isLoading && (
               <div className="mt-4 rounded-3xl bg-DAF2F1 p-4 shadow-2xl">
