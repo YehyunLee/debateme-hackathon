@@ -28,7 +28,7 @@ export default function Home() {
       <div className="snap-y snap-mandatory">
       <div className="bg-F5FAFA snap-start">
         <div className="flex flex-col items-center gap-2 pb-4" data-aos="fade-up">
-          <p className="text-1E635F mt-6 text-5xl font-extrabold">Welcome to Debate Me!</p>
+          <p className="text-1E635F mt-6 text-5xl font-extrabold font-sans">Welcome to Debate Me!</p>
           <p className="text-507371 text-2xl mb-4">
             Refine Your Debating Prowess And Communication Skills with AI
             Feedback
@@ -53,7 +53,7 @@ export default function Home() {
           </div>
         </div>
         <div className="bg-F5FAFA snap-center">
-        <h1 className='text-1E635F text-center pt-[2rem] mb-[1rem] text-3xl font-bold' >Leaderboard</h1>
+        <h1 className='text-1E635F text-center pt-[2rem] mb-[1rem] text-3xl font-bold font-sans' >Leaderboard</h1>
         <DebateLeaderboard/>
         </div>
         <div className="bg-F5FAFA snap-start">
