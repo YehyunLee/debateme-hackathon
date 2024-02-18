@@ -54,7 +54,7 @@ export default function Home() {
         </div>
         <div className="bg-F5FAFA snap-center">
         <h1 className='text-1E635F text-center pt-[2rem] mb-[1rem] text-3xl font-bold' > Leaderboard </h1>
-        <DebateLeaderboard data={users}/>
+        <DebateLeaderboard/>
         </div>
         <div className="bg-F5FAFA snap-start">
         <div className="textBlock text-1E635F bg-F5FAFA flex pt-8 pb-8 w-[60vw] flex-col mr-[auto] ml-[auto] [&>*]:mb-[0.5rem]">

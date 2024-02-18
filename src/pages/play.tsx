@@ -224,7 +224,7 @@ export default function Home() {
           <div className="w-full p-4 md:w-1/2">
             <div className="rounded-3xl bg-DAF2F1 p-4 shadow-2xl">
               <h2 className="mb-4 text-2xl font-bold">Leaderboard</h2>
-              <DebateLeaderboard data={users} />
+              <DebateLeaderboard/>
             </div>
           </div>
         </div>
