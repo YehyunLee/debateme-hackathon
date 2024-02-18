@@ -6,14 +6,13 @@ import Head from "next/head";
 import Image from "next/image";
 import VoiceToText from "~/components/VoiceToText";
 import { useEffect, useState } from "react";
-import { get_debate_prompts } from "~/pages/api/debate/debateAPI";
-import {axios} from "axios";
+import axios from "axios";
 var userTranscript: string
-
 export default function Debate(props: any) {
   let text: string;
   let bubbleContainer : HTMLElement | null;
   let sessionData = props.sessionData;
+  let i = 0;
   const [debatePrompt, setDebatePrompt] = useState('');
 
   useEffect(() => {
@@ -26,11 +25,13 @@ export default function Debate(props: any) {
       try {
         if (sessionData?.user?.id) {
           // Make a POST request to the Flask backend with the user's name as input
+          console.log("Hello World");
+          i = i + 1;
           const response = await axios.post(
             "https://web-production-a23d.up.railway.app/generate_debate_prompts",
             {
-              "gamemode": "normal", 
-              "interested_subjects": ["Artificial Intelligence", "Machine Learning", "Biden"]
+              gamemode: "normal", 
+              interested_subjects: ["Artificial Intelligence", "Machine Learning", "Biden"]
             },
             {
               headers: {
@@ -38,11 +39,10 @@ export default function Debate(props: any) {
               },
             },
           );
-
           console.log("Fetching user data...");
 
           // Update the component state with the received data
-          setDebatePrompt(response.data);
+          setDebatePrompt(response.data.Topic);
         }
       } catch (error) {
         console.error("Error fetching user data:", error);
