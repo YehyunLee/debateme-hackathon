@@ -1,20 +1,7 @@
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-/* eslint-disable @typescript-eslint/no-unsafe-call */
-import React from 'react';
-import { useSpeechSynthesis } from 'react-speech-kit';
-
-function TextToSpeech({ text }: { text: string }) {
-  const { speak } = useSpeechSynthesis();
-
-  const handleSpeak = () => {
-    speak({ text });
-  };
-
-  return (
-    <div>
-      <button onClick={handleSpeak}>Speak</button>
-    </div>
-  );
+function speak(text: string) {
+  const utterance = new SpeechSynthesisUtterance(text);
+  utterance.lang = 'en-US'; // Set the language to English
+  window.speechSynthesis.speak(utterance);
 }
 
-export default TextToSpeech;
+export default speak;

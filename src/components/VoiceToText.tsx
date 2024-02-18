@@ -13,7 +13,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
 import axios from 'axios';
-import speak from "~/components/speak";
+// import speak from "~/components/speak";
 
 
 var userTranscript: string[]
