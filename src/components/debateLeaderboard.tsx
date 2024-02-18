@@ -11,7 +11,7 @@ const DebateLeaderboard: React.FC = () => {
     useEffect(() => {
         const fetchLeaderboardData = async () => {
             try {
-                const response = await axios.get('https://web-production-a23d.up.railway.app/get_leaderboard');
+                const response = await axios.get('https://web-production-589c.up.railway.app/get_leaderboard');
                 // Convert object values to an array
                 const leaderboardArray = Object.values(response.data);
                 setLeaderboardData(leaderboardArray);

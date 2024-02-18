@@ -47,7 +47,7 @@ export default function Home() {
       try {
         if (sessionData?.user?.name) {
           const response = await axios.post(
-            "https://web-production-a23d.up.railway.app/get_user",
+            "https://web-production-589c.up.railway.app/get_user",
             {
               user_id: sessionData.user.id,
             },
@@ -87,7 +87,7 @@ export default function Home() {
 
         // Make a POST request to the Flask route
         const response = await axios.post(
-          "https://web-production-a23d.up.railway.app/create_user",
+          "https://web-production-589c.up.railway.app/create_user",
           {
             user_id: sessionData.user.id,
             username: sessionData.user.name,
@@ -120,7 +120,7 @@ export default function Home() {
 
         // Make a POST request to the Flask route
         const response = await axios.post(
-          "https://web-production-a23d.up.railway.app/remove_interests",
+          "https://web-production-589c.up.railway.app/remove_interests",
           {
             user_id: sessionData.user.id,
             interests: interestsArray,

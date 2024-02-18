@@ -37,7 +37,7 @@ export default function VoiceToText(props: any) {
       if (props.sessionData?.user?.id) {
         // Make a POST request to the Flask backend with the user's name as input
         const response = await axios.post(
-          "https://web-production-a23d.up.railway.app/generate_opposing_response",
+          "https://web-production-589c.up.railway.app/generate_opposing_response",
           {
             user_id: props.sessionData.user.id,
             debate_topic: props.debatePrompt, 
