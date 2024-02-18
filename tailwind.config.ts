@@ -6,13 +6,8 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        sans: [
-          '"Inter var", sans-serif',
-          {
-            fontFeatureSettings: '"cv11", "ss01"',
-            fontVariationSettings: '"opsz" 32'
-          },
-        ],
+        sans: ["var(--font-sans)", ...fontFamily.sans],
+      },
       colors: {
         '1E635F': '#1E635F',
         'F5FAFA': '#F5FAFA',

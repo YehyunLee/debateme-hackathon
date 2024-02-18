@@ -24,8 +24,10 @@ const MyApp: AppType<{ session: Session | null }> = ({
 
   return (
     <SessionProvider session={session}>
+      <div className="font-sans">
       <Nav />
       <Component {...pageProps} />
+      </div>
     </SessionProvider>
   );
 };
