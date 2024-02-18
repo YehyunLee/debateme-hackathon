@@ -1,18 +1,13 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { signIn, signOut, useSession } from "next-auth/react";
-import Head from "next/head";
 // import Link from "next/link";
-import Image from "next/image";
 import VoiceToText from "~/components/VoiceToText";
 import { useEffect, useState } from "react";
 import axios from "axios";
 var userTranscript: string
 export default function Debate(props: any) {
-  let text: string;
   let bubbleContainer : HTMLElement | null;
   let sessionData = props.sessionData;
-  let i = 0;
   const [debatePrompt, setDebatePrompt] = useState('');
 
   useEffect(() => {
@@ -26,7 +21,6 @@ export default function Debate(props: any) {
         if (sessionData?.user?.id) {
           // Make a POST request to the Flask backend with the user's name as input
           console.log("Hello World");
-          i = i + 1;
           const response = await axios.post(
             "https://web-production-a23d.up.railway.app/generate_debate_prompts",
             {
