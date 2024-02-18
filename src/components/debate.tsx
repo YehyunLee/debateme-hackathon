@@ -52,7 +52,7 @@ export default function Debate(props: any) {
 
     // Call the fetchUserData function when the component mounts
     getDebatePrompt();
-  }, [sessionData]); // Include sessionData in the dependency array
+  }, []); // Include sessionData in the dependency array
 
 
 

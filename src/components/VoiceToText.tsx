@@ -7,20 +7,20 @@
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
 import axios from 'axios';
 
 
 var userTranscript: string
-
+var botTranscript: string
 export default function VoiceToText(props: any) {
   //const [transcript, setTranscript] = useState('');
   const [style, setStyle] = useState("idle");
-  const [debateArgument, setDebateArgument] = useState('');
 
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
+  let button: HTMLButtonElement;
 
   const {
     transcript,
@@ -30,13 +30,8 @@ export default function VoiceToText(props: any) {
   } = useSpeechRecognition();
   
   const retrieveResponse = useCallback(async ()  => {
-    console.log({userTranscript});
-    console.log(props.debatePrompt);
-    console.log(props.sessionData?.user?.id);
     try {
       if (props.sessionData?.user?.id) {
-        setLoading(true);
-
         // Make a POST request to the Flask backend with the user's name as input
         const response = await axios.post(
           "https://web-production-a23d.up.railway.app/generate_opposing_response",
@@ -51,12 +46,12 @@ export default function VoiceToText(props: any) {
             },
           },
         );
-        console.log("Fetching user data...");
         
         // Update the component state with the received data
-        console.log(response.data.opposing_response);
-        setDebateArgument(response.data.opposing_response);
-        setLoading(false);
+
+        props.sendTranscriptToBot(response.data.opposing_response);
+        botTranscript += response.data.opposing_response;
+        button.disabled = false;
       }
     } catch (error) {
       console.error("Error fetching user data:", error);
@@ -64,10 +59,11 @@ export default function VoiceToText(props: any) {
 }, [userTranscript]);
   // eslint-disable-next-line @typescript-eslint/no-redundant-type-constituents, @typescript-eslint/no-explicit-any
   //var recognition: any = null;
-  
+  useEffect(() => {
+    button = document.getElementById('mic') as HTMLButtonElement;
+  })
   const [toggle, setToggle] = useState<boolean>(true);
   const toggleListening = () => {
-    
     if (style !== "idle") setStyle("idle");
     else setStyle("fill-red-500");
     if (toggle) {
@@ -79,14 +75,18 @@ export default function VoiceToText(props: any) {
       props.sendTranscriptToParent(transcript);
 
       userTranscript += transcript;
-      retrieveResponse();
-      props.sendTranscriptToBot(debateArgument);
-
+      retrieveResponse()
+      button.disabled = true;
       
     }
     setToggle(!toggle);
   };
   
+  useEffect(() => {
+    
+
+
+  })
 
   if (loading) {
 
@@ -96,7 +96,7 @@ export default function VoiceToText(props: any) {
     <>
     
     <div className='w-100vw clear-both mb-0 absolute flex-col items-center justify-center text-center sticky backdrop-filter backdrop-blur'>
-      <button onClick={toggleListening} className="border-2 rounded-full p-[0.25rem] border-black">
+      <button id="mic" onClick={toggleListening} className="border-2 rounded-full p-[0.25rem] border-black">
       <svg className={style} fill="#000000" height="25px" width="25px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" 
 	 viewBox="0 0 470 470">
         <g>
