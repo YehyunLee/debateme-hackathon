@@ -12,8 +12,9 @@ import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognitio
 import axios from 'axios';
 import speak from '~/components/speak';
 
-var userTranscript: string
-var botTranscript: string
+
+var userTranscript: string[] = []
+var botTranscript: string[] = []
 export default function VoiceToText(props: any) {
   //const [transcript, setTranscript] = useState('');
   const [style, setStyle] = useState("idle");
@@ -51,7 +52,6 @@ export default function VoiceToText(props: any) {
 
         props.sendTranscriptToBot(response.data.opposing_response);
         botTranscript += response.data.opposing_response;
-        speak(response.data.opposing_response);
         button.disabled = false;
       }
     } catch (error) {
