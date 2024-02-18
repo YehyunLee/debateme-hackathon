@@ -27,13 +27,18 @@ export default function VoiceToText(props: any) {
   } = useSpeechRecognition();
   
   const retrieveResponse = useCallback(async ()  => {
+    console.log({userTranscript});
+    console.log(props.debatePrompt);
+    console.log(props.sessionData?.user?.id);
     try {
       if (props.sessionData?.user?.id) {
         setLoading(true);
+
         // Make a POST request to the Flask backend with the user's name as input
         const response = await axios.post(
           "https://web-production-a23d.up.railway.app/generate_opposing_response",
           {
+            user_id: props.sessionData.user.id,
             debate_topic: props.debatePrompt, 
             user_transcript: userTranscript
           },
@@ -46,7 +51,8 @@ export default function VoiceToText(props: any) {
         console.log("Fetching user data...");
         
         // Update the component state with the received data
-        setDebateArgument(response.data.Topic);
+        console.log(response.data.opposing_response);
+        setDebateArgument(response.data.opposing_response);
         setLoading(false);
       }
     } catch (error) {
@@ -71,9 +77,6 @@ export default function VoiceToText(props: any) {
 
       userTranscript += transcript;
       retrieveResponse();
-      while (loading) {
-
-      }
       props.sendTranscriptToBot(debateArgument);
 
       

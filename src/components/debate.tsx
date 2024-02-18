@@ -15,9 +15,7 @@ export default function Debate(props: any) {
   let bubbleContainer : HTMLElement | null;
   let sessionData = props.sessionData;
   const [debatePrompt, setDebatePrompt] = useState('');
-  const [debateArgument, setDebateArgument] = useState('');
-
-  const [loading, setLoading] = useState(false);
+  
 
   useEffect(() => {
     bubbleContainer = document.getElementById('bubbleContainer');
@@ -80,7 +78,7 @@ export default function Debate(props: any) {
       < div id="bubbleContainer" className="w-[100vw] flex-col ">
         {/* <div className="bubble right">Ok, Thank you</div> */}
         </div>
-        <VoiceToText sendTranscriptToParent={showTranscript} debatePrompt={debatePrompt} sendTranscriptToBot={showAnswer} />
+        <VoiceToText sendTranscriptToParent={showTranscript} sessionData={sessionData} debatePrompt={debatePrompt} sendTranscriptToBot={showAnswer} />
 
     </>
   );
