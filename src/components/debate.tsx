@@ -16,7 +16,8 @@ export default function Debate(props: any) {
   let sessionData = props.sessionData;
   const [debatePrompt, setDebatePrompt] = useState('');
   
-
+  console.log(props.interests);
+  console.log("DIsidids");
   useEffect(() => {
     bubbleContainer = document.getElementById('bubbleContainer');
 
