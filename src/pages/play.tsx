@@ -230,7 +230,7 @@ export default function Home() {
         </div>
       )}
 
-      {debateChatEnabled && <Debate />}
+      {debateChatEnabled && <Debate sessionData={sessionData}/>}
     </>
   );
 }
