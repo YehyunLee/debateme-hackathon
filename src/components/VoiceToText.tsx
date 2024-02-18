@@ -55,7 +55,7 @@ export default function VoiceToText(props: any) {
 
         props.sendTranscriptToBot(response.data.opposing_response);
         botTranscript += response.data.opposing_response;
-        speak(response.data.opposing_response);
+        // speak(response.data.opposing_response);
         button.disabled = false;
         if (1 < userTranscript.length) {
           getDebatePrompt()
