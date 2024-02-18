@@ -74,7 +74,7 @@ export default function Debate(props: any) {
 
   return (
     <>
-    <p> {debatePrompt} </p>
+    <p className="pl-8 pb-8"> {debatePrompt} </p>
       < div id="bubbleContainer" className="w-[100vw] flex-col ">
         {/* <div className="bubble right">Ok, Thank you</div> */}
         </div>
