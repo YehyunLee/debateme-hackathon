@@ -75,11 +75,10 @@ export default function Debate(props: any) {
 
   return (
     <>
-  <p className="pl-8 pb-8 text-lg text-gray-700 font-semibold rounded-3xl bg-DAF2F1 shadow-2xl w-auto"> {debatePrompt} </p>
+  <p className="pl-8 pb-8 pt-8 mr-[1rem] ml-[1rem] text-lg text-gray-700 font-semibold rounded-3xl bg-DAF2F1 shadow-2xl w-auto"> {debatePrompt} </p>
       < div id="bubbleContainer" className="w-[100vw] flex-col ">
         {/* <div className="bubble right">Ok, Thank you</div> */}
         </div>
-        <hr className="m-[1rem] bg-black"></hr>
         <VoiceToText sendTranscriptToParent={showTranscript} sessionData={sessionData} debatePrompt={debatePrompt} sendTranscriptToBot={showAnswer} />
 
     </>
