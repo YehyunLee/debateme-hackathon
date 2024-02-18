@@ -138,7 +138,7 @@ export default function VoiceToText(props: any) {
   return (
     <>
     
-    <div className='w-100vw clear-both mb-0 absolute flex-col items-center justify-center text-center sticky backdrop-filter backdrop-blur'>
+    <div className='w-100vw clear-both mb-32 absolute flex-col items-center justify-center text-center sticky backdrop-filter backdrop-blur'>
       <button id="mic" onClick={toggleListening} className="border-2 rounded-full p-[0.25rem] border-black">
       <svg className={style} fill="#000000" height="25px" width="25px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" 
 	 viewBox="0 0 470 470">
