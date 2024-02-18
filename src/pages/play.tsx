@@ -48,7 +48,7 @@ export default function Home() {
           const response = await axios.post(
             "https://web-production-a23d.up.railway.app/get_user",
             {
-              user_id: sessionData.user.name,
+              user_id: sessionData.user.id,
             },
             {
               headers: {
@@ -131,7 +131,7 @@ export default function Home() {
           <div className="w-full p-4 md:w-1/2">
 
             {!userData.isLoading && (
-            <div className="rounded-3xl bg-DAF2F1 p-4 shadow-2xl">
+            <div className="rounded-3xl bg-DAF2F1 p-4 shadow-2xl mb-4">
               <h2 className="mb-4 text-2xl font-bold">Profile</h2>
               {userData.isLoading ? (
                 <p>Loading...</p>
@@ -150,7 +150,7 @@ export default function Home() {
             </div>
           )}
 
-            <div className="mt-4 rounded-3xl bg-DAF2F1 p-4 shadow-2xl">
+            <div className="rounded-3xl bg-DAF2F1 p-4 shadow-2xl">
         <h2 className="mb-4 text-2xl font-bold">Create Account</h2>
         <div className="mb-4 rounded-lg bg-white p-4">
           <label htmlFor="interests" className="block text-gray-700">
